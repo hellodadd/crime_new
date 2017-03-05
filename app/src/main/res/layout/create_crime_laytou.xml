@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_crime_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.newcrime.CreateCrimeActivityP2">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_create_crime"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="?attr/colorPrimary">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/toolbar_left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="@dimen/text_size"
+                android:textColor="#ffffffff"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/toolbar_title" />
+            <Button
+                android:id="@+id/toolbar_right_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/paddingtop"
+        android:paddingLeft="@dimen/paddingleft"
+        android:layout_below="@id/toolbar_create_crime">
+
+        <TextView
+            android:id="@+id/input_crime_time"
+            android:text="@string/input_crime_time"
+            android:textSize="@dimen/text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/crime_time_start_layout"
+        android:layout_below="@id/input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/paddingleft"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/crime_time_start"
+            android:text="@string/crime_time_start"
+            android:textSize="@dimen/text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/crime_time_start_picker_date"
+            android:background="@drawable/select_shape"
+            android:layout_marginLeft="@dimen/paddingleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+
+        <Button
+            android:id="@+id/crime_time_start_picker_time"
+            android:background="@drawable/select_shape"
+            android:layout_marginLeft="@dimen/paddingleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/crime_time_end_layout"
+        android:layout_below="@id/crime_time_start_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/paddingtop"
+        android:paddingLeft="@dimen/paddingleft"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/crime_time_end"
+            android:text="@string/crime_time_end"
+            android:textSize="@dimen/text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/crime_time_end_picker_date"
+            android:background="@drawable/select_shape"
+            android:layout_marginLeft="@dimen/paddingleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+
+        <Button
+            android:id="@+id/crime_time_end_picker_time"
+            android:background="@drawable/select_shape"
+            android:layout_marginLeft="@dimen/paddingleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/input_layout_gps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/paddingleft"
+        android:layout_below="@id/crime_time_end_layout">
+        <TextView
+            android:id="@+id/input_crime_gps"
+            android:text="@string/gps_string"
+            android:textSize="@dimen/text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/gps_name_count"
+            android:text="0/35"
+            android:textSize="@dimen/text_size"
+            android:padding="@dimen/paddingleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.android.newcrime.utils.ClearableEditText
+        android:id="@+id/gps_input_editview"
+        android:layout_below="@id/input_layout_gps"
+        android:paddingLeft="@dimen/paddingleft"
+        android:paddingRight="@dimen/paddingleft"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/edittext_hight"/>
+
+    <TextView
+        android:id="@+id/gps_location"
+        android:layout_below="@id/gps_input_editview"
+        android:text="@string/gps_location"
+        android:textSize="@dimen/text_size"
+        android:paddingLeft="@dimen/paddingleft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/gps_info_button"
+        android:layout_marginLeft="@dimen/paddingleft"
+        android:layout_below="@id/gps_location"
+        android:background="@drawable/select_shape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/bottom_left_button"
+        android:text="@string/prevers_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        android:id="@+id/bottom_right_button"
+        android:text="@string/next_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

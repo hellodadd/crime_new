@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">新建案件</string>
+    <string name="create_crime">新建案件</string>
+    <string name="back">返回</string>
+    <string name="input_crime_name">请输入案件名称:</string>
+    <string name="create_crime_button">创建案件</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="input_crime_time">录入案发时间:</string>
+    <string name="crime_time_start">开始:</string>
+    <string name="crime_time_end">结束:</string>
+    <string name="ok">确认</string>
+    <string name="reset">清除</string>
+    <string name="gps_string">GPS采集点位置：</string>
+    <string name="gps_location">GPS定位信息:</string>
+    <string name="prevers_step">上一步</string>
+    <string name="next_step">下一步</string>
+    <string name="location1">地点1：</string>
+    <string name="location2">地点2：</string>
+    <string name="location3">地点3：</string>
+    <string name="location4">地点4：</string>
+    <string name="location5">地点5：</string>
+    <string name="collection">点击采集基站信息</string>
+    <string name="collection_runing">采集中</string>
+    <string name="collection_over">采集基站信息成功</string>
+    <string name="text_list">案件列表</string>
+    <string name="gps_location_fail">定位失败，事后补采</string>
+    <string name="case_name_empty">请填写案件名称</string>
+</resources>
