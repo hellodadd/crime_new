@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,8 +38,8 @@ import java.util.Calendar;
 public class CreateCrimeActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
-    Button mLeftButton;
-    Button mRightButton;
+    ImageView mLeftButton;
+    ImageView mRightButton;
     Button mTimeStartDatePicker;
     Button mTimeStartTimePicker;
     Button mTimeEndDatePicker;
@@ -105,10 +106,8 @@ public class CreateCrimeActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_create_crime);
         mToolbar.setTitle(getString(R.string.create_crime));
 
-        mLeftButton = (Button) findViewById(R.id.toolbar_left_button);
-        mRightButton = (Button) findViewById(R.id.toolbar_right_button);
-        mLeftButton.setText(getString(R.string.save));
-        mRightButton.setText(getString(R.string.cancel));
+        mLeftButton = (ImageView) findViewById(R.id.toolbar_left_button);
+        mRightButton = (ImageView) findViewById(R.id.toolbar_right_button);
 
         mTimeStartDatePicker = (Button) findViewById(R.id.crime_time_start_picker_date);
         mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));

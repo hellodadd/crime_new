@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +31,8 @@ import static com.android.newcrime.utils.CommonConst.initPreferences;
 public class CreateActivity extends AppCompatActivity {
 
     Toolbar  mToolbar;
-    Button   mToolbarLeftButton;
-    Button   mToolbarRightButton;
+    ImageView mToolbarLeftButton;
+    ImageView   mToolbarRightButton;
     TextView mToolbarTitile;
     Button   mCreateCrimeButton;
     ClearableEditText mNameEditText;
@@ -57,11 +58,10 @@ public class CreateActivity extends AppCompatActivity {
 
         mToolbarTitile = (TextView) findViewById(R.id.toolbar_title);
         mToolbarTitile.setText(getString(R.string.create_crime));
-        mToolbarLeftButton = (Button)findViewById(R.id.toolbar_left_button);
-        mToolbarLeftButton.setVisibility(View.GONE);
-        mToolbarRightButton = (Button)findViewById(R.id.toolbar_right_button);
-        mToolbarRightButton.setText(getString(R.string.back));
-        mToolbarRightButton.setOnClickListener(new View.OnClickListener() {
+        mToolbarLeftButton = (ImageView) findViewById(R.id.toolbar_left_button);
+        mToolbarRightButton = (ImageView)findViewById(R.id.toolbar_right_button);
+        mToolbarRightButton.setVisibility(View.GONE);
+        mToolbarLeftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -80,15 +80,19 @@ public class CreateActivity extends AppCompatActivity {
         mCreateCrimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mNameEditText.getText() == null || mNameEditText.getText().isEmpty()){
-                    Toast.makeText(mContext, getString(R.string.case_name_empty), Toast.LENGTH_SHORT).show();
-                }else {
-                    CommonConst.setPreferences(getApplicationContext(),
-                            CommonConst.KEY_CASE_NAME,mNameEditText.getText());
-                    startActivity(new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class));
-                }
+               createNewCase();
             }
         });
+    }
+
+    private void createNewCase(){
+        if(mNameEditText.getText() == null || mNameEditText.getText().isEmpty()){
+            Toast.makeText(mContext, getString(R.string.case_name_empty), Toast.LENGTH_SHORT).show();
+        }else {
+            CommonConst.setPreferences(getApplicationContext(),
+                    CommonConst.KEY_CASE_NAME,mNameEditText.getText());
+            startActivity(new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class));
+        }
     }
 
     private TextWatcher mTextWatch = new TextWatcher(){

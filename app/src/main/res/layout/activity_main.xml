@@ -14,10 +14,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <Button
+        <ImageView
             android:id="@+id/toolbar_left_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/btn_back_mini"
             android:layout_alignParentLeft="true"/>
         <TextView
             android:layout_width="wrap_content"
@@ -28,10 +29,11 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:id="@+id/toolbar_title" />
-        <Button
+        <ImageView
             android:id="@+id/toolbar_right_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/btn_finish"
             android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -73,8 +75,10 @@
     <Button
         android:id="@+id/create_crime_button"
         android:text="@string/create_crime_button"
-        android:background="@drawable/shape"
-        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_shape"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"/>

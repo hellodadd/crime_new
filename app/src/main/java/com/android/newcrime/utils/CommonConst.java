@@ -32,6 +32,10 @@ public class CommonConst {
 
     public static final String KEY_CASE_COLLECTION_ING = "case_collection_ing";
     public static final String KEY_CASE_LOCATION_1_COLLECTION_ING = "case_location_1_ing";
+    public static final String KEY_CASE_LOCATION_2_COLLECTION_ING = "case_location_2_ing";
+    public static final String KEY_CASE_LOCATION_3_COLLECTION_ING = "case_location_3_ing";
+    public static final String KEY_CASE_LOCATION_4_COLLECTION_ING = "case_location_4_ing";
+    public static final String KEY_CASE_LOCATION_5_COLLECTION_ING = "case_location_5_ing";
 
     public static void setPreferences(Context context, String key, String value){
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);

@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.newcrime.utils.ClearableEditText;
@@ -22,8 +23,8 @@ import com.android.newcrime.utils.CommonConst;
 
 public class CreateCrimeActivityP2 extends AppCompatActivity {
 
-    Button mToolbarLeftButton;
-    Button mToolbarRightButton;
+    ImageView mToolbarLeftButton;
+    ImageView mToolbarRightButton;
 
     Button mBottomRightButton;
 
@@ -54,10 +55,8 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mIsCollectionIng = CommonConst.getPreferences(getApplicationContext(),
                 CommonConst.KEY_CASE_COLLECTION_ING, false);
 
-        mToolbarLeftButton = (Button)findViewById(R.id.toolbar_left_button);
-        mToolbarRightButton = (Button)findViewById(R.id.toolbar_right_button);
-        mToolbarLeftButton.setText(getString(R.string.save));
-        mToolbarRightButton.setText(getString(R.string.cancel));
+        mToolbarLeftButton = (ImageView)findViewById(R.id.toolbar_left_button);
+        mToolbarRightButton = (ImageView)findViewById(R.id.toolbar_right_button);
 
         mLocationName1 = (ClearableEditText) findViewById(R.id.location_1_editview);
         mLocationName1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
@@ -168,7 +167,9 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection3.setClickable(false);
 
         CommonConst.setPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_COLLECTION_ING,false);
+                CommonConst.KEY_CASE_COLLECTION_ING,true);
+        CommonConst.setPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_1_COLLECTION_ING,true);
 
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
@@ -187,7 +188,9 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection3.setClickable(false);
 
         CommonConst.setPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_COLLECTION_ING,false);
+                CommonConst.KEY_CASE_COLLECTION_ING,true);
+        CommonConst.setPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_2_COLLECTION_ING,true);
 
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
@@ -206,7 +209,9 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection3.setClickable(false);
 
         CommonConst.setPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_COLLECTION_ING,false);
+                CommonConst.KEY_CASE_COLLECTION_ING,true);
+        CommonConst.setPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_3_COLLECTION_ING,true);
 
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
