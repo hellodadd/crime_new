@@ -107,6 +107,71 @@ public class CommonConst {
         editor.commit();
     }
 
+    public static boolean isFirstCreateCase(Context context){
+        String case_name = getPreferences(context, KEY_CASE_NAME, "");
+        if(case_name == null || case_name.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isCaseInputOver(Context context){
+        /*String case_name = getPreferences(context, KEY_CASE_NAME, "");
+        if(case_name == null || case_name.isEmpty()){
+            return false;
+        }*/
+        String gps_name =  getPreferences(context, KEY_CASE_GPS_NAME, "");
+        if(gps_name == null || gps_name.isEmpty()){
+            return false;
+        }
+        String gps_lat =  getPreferences(context, KEY_CASE_GPS_LAT, "");
+        if(gps_lat == null || gps_lat.isEmpty()){
+            return false;
+        }
+        String location1 =  getPreferences(context, KEY_CASE_LOCATION_1, "");
+        if(location1 == null || location1.isEmpty()){
+            return false;
+        }
+        String location1_file =  getPreferences(context, KEY_CASE_LOCATION_1_FILE, "");
+        if(location1_file == null || location1_file.isEmpty()){
+            return false;
+        }
+        String location2 =  getPreferences(context, KEY_CASE_LOCATION_2, "");
+        if(location2 == null || location2.isEmpty()){
+            return false;
+        }
+        String location2_file =  getPreferences(context, KEY_CASE_LOCATION_2_FILE, "");
+        if(location2_file == null || location2_file.isEmpty()){
+            return false;
+        }
+        String location3 =  getPreferences(context, KEY_CASE_LOCATION_3, "");
+        if(location3 == null || location3.isEmpty()){
+            return false;
+        }
+        String location3_file =  getPreferences(context, KEY_CASE_LOCATION_3_FILE, "");
+        if(location3_file == null || location3_file.isEmpty()){
+            return false;
+        }
+        String location4 =  getPreferences(context, KEY_CASE_LOCATION_4, "");
+        if(location4 == null || location4.isEmpty()){
+            return false;
+        }
+        String location4_file =  getPreferences(context, KEY_CASE_LOCATION_4_FILE, "");
+        if(location4_file == null || location4_file.isEmpty()){
+            return false;
+        }
+        String location5 =  getPreferences(context, KEY_CASE_LOCATION_5, "");
+        if(location5 == null || location5.isEmpty()){
+            return false;
+        }
+        String location5_file =  getPreferences(context, KEY_CASE_LOCATION_5_FILE, "");
+        if(location5_file == null || location5_file.isEmpty()){
+            return false;
+        }
+
+        return true;
+    }
+
     public static String copyToInternalPath(Context context, String OldPath){
         String NewPath = "";
         File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Report");

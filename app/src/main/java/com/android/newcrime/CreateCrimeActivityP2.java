@@ -35,6 +35,7 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
     ImageView mToolbarRightButton;
 
     Button mBottomRightButton;
+    Button mBottomLeftButton;
 
     ClearableEditText mLocationName1;
     ClearableEditText mLocationName2;
@@ -61,7 +62,26 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mContext = getApplicationContext();
 
         mToolbarLeftButton = (ImageView)findViewById(R.id.toolbar_left_button);
+        mToolbarLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mIsCollectionIng){
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.msg_alert_collection_ing),Toast.LENGTH_LONG).show();
+                }else{
+                    onBackPressed();
+                }
+            }
+        });
         mToolbarRightButton = (ImageView)findViewById(R.id.toolbar_right_button);
+        mToolbarRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                savedata();
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.msg_alert_save),Toast.LENGTH_LONG).show();
+            }
+        });
 
         mLocationName1 = (ClearableEditText) findViewById(R.id.location_1_editview);
         mLocationName1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
@@ -82,7 +102,14 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
 
             }
         });
+        String locationName1 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_1, "");
+        if(locationName1 != null && !locationName1.isEmpty()){
+            mLocationName1.setText(locationName1);
+        }
+
         mLocationNumCount1 = (TextView)findViewById(R.id.location1_num_count);
+
         mLocationCollection1 = (Button)findViewById(R.id.location_collection_1_button);
         mLocationCollection1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +124,12 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
                 }
             }
         });
+
+        String locatonFile1 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_1_FILE, "");
+        if(locatonFile1 != null && !locatonFile1.isEmpty()){
+            mLocationCollection1.setText(getResources().getString(R.string.collection_over));
+        }
 
         mLocationName2 = (ClearableEditText) findViewById(R.id.location_2_editview);
         mLocationName2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
@@ -117,6 +150,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
 
             }
         });
+        String locationName2 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_2, "");
+        if(locationName2 != null && !locationName2.isEmpty()){
+            mLocationName2.setText(locationName2);
+        }
         mLocationNumCount2 = (TextView)findViewById(R.id.location2_num_count);
         mLocationCollection2 = (Button)findViewById(R.id.location_collection_2_button);
         mLocationCollection2.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +170,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
                 }
             }
         });
+        String locatonFile2 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_2_FILE, "");
+        if(locatonFile2 != null && !locatonFile2.isEmpty()){
+            mLocationCollection2.setText(getResources().getString(R.string.collection_over));
+        }
 
         mLocationName3 = (ClearableEditText) findViewById(R.id.location_3_editview);
         mLocationName3.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
@@ -152,6 +195,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
 
             }
         });
+        String locationName3 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_3, "");
+        if(locationName3 != null && !locationName3.isEmpty()){
+            mLocationName3.setText(locationName3);
+        }
         mLocationNumCount3 = (TextView)findViewById(R.id.location3_num_count);
         mLocationCollection3 = (Button)findViewById(R.id.location_collection_3_button);
         mLocationCollection3.setOnClickListener(new View.OnClickListener() {
@@ -167,13 +215,27 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
                 }
             }
         });
+        String locatonFile3 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_3_FILE, "");
+        if(locatonFile3 != null && !locatonFile3.isEmpty()){
+            mLocationCollection3.setText(getResources().getString(R.string.collection_over));
+        }
 
 
         mBottomRightButton = (Button)findViewById(R.id.bottom_right_button);
         mBottomRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                savedata();
                 startActivity(new Intent(CreateCrimeActivityP2.this, CreateCrimeActivityP3.class));
+            }
+        });
+
+        mBottomLeftButton = (Button)findViewById(R.id.bottom_left_button);
+        mBottomLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 
@@ -191,10 +253,14 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             mLocationCollection1.setClickable(false);
             mLocationCollection2.setClickable(false);
             mLocationCollection3.setClickable(false);
+
+            mBottomRightButton.setEnabled(false);
         }else {
             mLocationCollection1.setClickable(true);
             mLocationCollection2.setClickable(true);
             mLocationCollection3.setClickable(true);
+
+            mBottomRightButton.setEnabled(true);
         }
 
         String path1 = CommonConst.getPreferences(getApplicationContext(),
@@ -219,13 +285,33 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         unregisterReceiver(receiver);
     }
 
+    private void savedata(){
+        if(mLocationName1.getText() != null && !mLocationName1.getText().isEmpty()){
+            CommonConst.setPreferences(getApplicationContext(),
+                    CommonConst.KEY_CASE_LOCATION_1,mLocationName1.getText());
+        }
+
+        if(mLocationName2.getText() != null && !mLocationName2.getText().isEmpty()){
+            CommonConst.setPreferences(getApplicationContext(),
+                    CommonConst.KEY_CASE_LOCATION_2,mLocationName2.getText());
+        }
+
+        if(mLocationName3.getText() != null && !mLocationName3.getText().isEmpty()){
+            CommonConst.setPreferences(getApplicationContext(),
+                    CommonConst.KEY_CASE_LOCATION_3,mLocationName3.getText());
+        }
+    }
+
     /**/
     private void startCollectionLocation1(){
+        mIsCollectionIng = true;
         mLocationCollection1.setClickable(false);
         mLocationCollection1.setText(getString(R.string.collection_runing));
 
         mLocationCollection2.setClickable(false);
         mLocationCollection3.setClickable(false);
+
+        mBottomRightButton.setEnabled(false);
 
         CommonConst.setPreferences(getApplicationContext(),
                 CommonConst.KEY_CASE_COLLECTION_ING,true);
@@ -241,12 +327,15 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
     }
 
     private void startCollectionLocation2(){
+        mIsCollectionIng = true;
         mLocationCollection1.setClickable(false);
 
         mLocationCollection2.setText(getString(R.string.collection_runing));
 
         mLocationCollection2.setClickable(false);
         mLocationCollection3.setClickable(false);
+
+        mBottomRightButton.setEnabled(false);
 
         CommonConst.setPreferences(getApplicationContext(),
                 CommonConst.KEY_CASE_COLLECTION_ING,true);
@@ -262,12 +351,15 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
     }
 
     private void startCollectionLocation3(){
+        mIsCollectionIng = true;
         mLocationCollection1.setClickable(false);
 
         mLocationCollection2.setText(getString(R.string.collection_runing));
 
         mLocationCollection2.setClickable(false);
         mLocationCollection3.setClickable(false);
+
+        mBottomRightButton.setEnabled(false);
 
         CommonConst.setPreferences(getApplicationContext(),
                 CommonConst.KEY_CASE_COLLECTION_ING,true);
@@ -287,6 +379,8 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(CommonConst.ACTION_RECEIVE_RESULT)){
                 Log.i("zwb","zwb ----- receiver");
+                mBottomRightButton.setEnabled(true);
+                mIsCollectionIng = false;
                 CommonConst.setPreferences(getApplicationContext(),
                         CommonConst.KEY_CASE_COLLECTION_ING,false);
 

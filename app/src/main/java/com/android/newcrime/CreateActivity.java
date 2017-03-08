@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -44,6 +45,8 @@ public class CreateActivity extends AppCompatActivity {
     private Context mContext;
     private CrimeProvider mCrimeProvider;
 
+    private boolean mIsContinue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,15 @@ public class CreateActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         mCrimeProvider = new CrimeProvider(mContext);
 
-        initPreferences(mContext);
+        if(getIntent() != null){
+            mIsContinue = getIntent().getBooleanExtra("continue", false);
+        }else{
+            mIsContinue = false;
+        }
+
+        if(!mIsContinue) {
+            initPreferences(mContext);
+        }
 
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle("");
@@ -75,8 +86,16 @@ public class CreateActivity extends AppCompatActivity {
         mNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
         mNameCount = (TextView)findViewById(R.id.name_number_count);
 
-        mNameEditText.setText(DateTimePicker.getCurrentDate(Calendar.getInstance().getTimeInMillis()));
+        String caseName = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_NAME,"");
+        if(caseName == null || caseName.isEmpty()) {
+            mNameEditText.setText(DateTimePicker.getCurrentDate(Calendar.getInstance().getTimeInMillis()));
+        }else{
+            mNameEditText.setText(caseName);
+        }
         mNameEditText.addTextChangedListener(mTextWatch);
+
+        mNameCount.setText(mNameEditText.getText().length() + "/35");
 
 
 
@@ -98,7 +117,9 @@ public class CreateActivity extends AppCompatActivity {
             CrimeItem item = new CrimeItem();
             item.setCaseName(mNameEditText.getText());
             mCrimeProvider.insert(item);
-            startActivity(new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class));
+            Intent intent = new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class);
+            intent.putExtra("continue", mIsContinue);
+            startActivity(intent);
         }
     }
 

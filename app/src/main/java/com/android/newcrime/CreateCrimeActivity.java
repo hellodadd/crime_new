@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -50,8 +51,11 @@ public class CreateCrimeActivity extends AppCompatActivity {
     Button mGpsLocationButton;
 
     Button mNextButton;
+    Button mPrevButton;
 
     private Calendar mCalendar;
+
+    private boolean mIsContinue;
 
     public AMapLocationClient mLocationClient = null;
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
@@ -60,7 +64,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
             if (amapLocation != null) {
                 if (amapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
-                    if(mGpsLocationButton != null){
+                    if(mGpsLocationButton != null && !isGpsLocationDone(getApplicationContext())){
                         mGpsLocationButton.setText(amapLocation.getLatitude() + "E" + "," +
                                 amapLocation.getLongitude() + "N");
                         CommonConst.setPreferences(getApplicationContext(),
@@ -90,6 +94,12 @@ public class CreateCrimeActivity extends AppCompatActivity {
         setContentView(R.layout.create_crime_laytou);
 
         mCalendar = Calendar.getInstance();
+
+        if(getIntent() != null){
+            mIsContinue = getIntent().getBooleanExtra("continue",false);
+        }else {
+            mIsContinue = false;
+        }
 
         mLocationClient = new AMapLocationClient(getApplicationContext());
         mLocationClient.setLocationListener(mLocationListener);
@@ -121,12 +131,22 @@ public class CreateCrimeActivity extends AppCompatActivity {
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_GPS_NAME,mGpsInputEdit.getText());
                     //insert to db;
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.msg_alert_save),Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+        long timeStart = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_START_TIME,mCalendar.getTimeInMillis());
+        long timeEnd = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_END_TIME,mCalendar.getTimeInMillis());
         mTimeStartDatePicker = (Button) findViewById(R.id.crime_time_start_picker_date);
-        mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+        if(mIsContinue) {
+            mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(timeStart));
+        }else{
+            mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+        }
         mTimeStartDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,7 +155,11 @@ public class CreateCrimeActivity extends AppCompatActivity {
         });
 
         mTimeStartTimePicker = (Button) findViewById(R.id.crime_time_start_picker_time);
-        mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+        if(mIsContinue) {
+            mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(timeStart));
+        }else {
+            mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+        }
         mTimeStartTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +168,11 @@ public class CreateCrimeActivity extends AppCompatActivity {
         });
 
         mTimeEndDatePicker = (Button) findViewById(R.id.crime_time_end_picker_date);
-        mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+        if(mIsContinue) {
+            mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(timeEnd));
+        }else {
+            mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+        }
         mTimeEndDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,7 +181,11 @@ public class CreateCrimeActivity extends AppCompatActivity {
         });
 
         mTimeEndTimePicker = (Button) findViewById(R.id.crime_time_end_picker_time);
-        mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+        if(mIsContinue){
+            mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(timeEnd));
+        }else {
+            mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+        }
         mTimeEndTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,7 +199,17 @@ public class CreateCrimeActivity extends AppCompatActivity {
 
         mGpsNameCount = (TextView) findViewById(R.id.gps_name_count);
 
+        String gpsName = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_GPS_NAME, "");
+        if(gpsName != null && !gpsName.isEmpty()){
+            mGpsInputEdit.setText(gpsName);
+        }
         mGpsLocationButton = (Button) findViewById(R.id.gps_info_button);
+        if(isGpsLocationDone(getApplicationContext())){
+            String lat = CommonConst.getPreferences(getApplicationContext(), CommonConst.KEY_CASE_GPS_LAT, "");
+            String lon = CommonConst.getPreferences(getApplicationContext(), CommonConst.KEY_CASE_GPS_LON, "");
+            mGpsLocationButton.setText(lat + "," + lon);
+        }
 
         mNextButton = (Button) findViewById(R.id.bottom_right_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +218,14 @@ public class CreateCrimeActivity extends AppCompatActivity {
                 CommonConst.setPreferences(getApplicationContext(),
                         CommonConst.KEY_CASE_GPS_NAME, mGpsInputEdit.getText());
                 startActivity(new Intent(CreateCrimeActivity.this, CreateCrimeActivityP2.class));
+            }
+        });
+
+        mPrevButton = (Button)findViewById(R.id.bottom_left_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
@@ -198,6 +248,20 @@ public class CreateCrimeActivity extends AppCompatActivity {
         public void afterTextChanged(Editable editable) {
         }
     };
+
+    private boolean isGpsLocationDone(Context context){
+        String lat = CommonConst.getPreferences(context, CommonConst.KEY_CASE_GPS_LAT, "");
+        String lon = CommonConst.getPreferences(context, CommonConst.KEY_CASE_GPS_LON, "");
+        if(lat == null || lat.isEmpty()){
+            return false;
+        }
+
+        if(lon == null || lat.isEmpty()){
+            return false;
+        }
+
+        return true;
+    }
 
     private void showDateTimeDialog(final Button timeButton, final int type) {
         // Create the dialog

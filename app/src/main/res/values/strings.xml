@@ -27,4 +27,11 @@
     <string name="gps_location_fail">定位失败，事后补采</string>
     <string name="case_name_empty">请填写案件名称</string>
     <string name="location_name_empty">请填写地点名称</string>
+    <string name="msg_alert">警告</string>
+    <string name="msg_alert_content">继续补录未完成的案件？</string>
+    <string name="msg_alert_continue">补录</string>
+    <string name="msg_alert_new_create">新建</string>
+    <string name="msg_alert_collection_ing">基站信息采集中,请稍候！</string>
+    <string name="msg_alert_save">录入信息保存成功！</string>
+    <string name="button_done">完成</string>
 </resources>
