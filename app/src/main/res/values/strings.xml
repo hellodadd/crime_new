@@ -23,6 +23,7 @@
     <string name="collection">点击采集基站信息</string>
     <string name="collection_runing">采集中</string>
     <string name="collection_over">采集基站信息成功</string>
+    <string name="collection_fail">未采集基站信息</string>
     <string name="text_list">案件列表</string>
     <string name="gps_location_fail">定位失败，事后补采</string>
     <string name="case_name_empty">请填写案件名称</string>
@@ -34,4 +35,8 @@
     <string name="msg_alert_collection_ing">基站信息采集中,请稍候！</string>
     <string name="msg_alert_save">录入信息保存成功！</string>
     <string name="button_done">完成</string>
+    <string name="msg_case_info_confirm">案件录入信息确认</string>
+    <string name="case_name">案件名称</string>
+    <string name="crime_time_start_info">开始时间:</string>
+    <string name="crime_time_end_info">结束时间:</string>
 </resources>

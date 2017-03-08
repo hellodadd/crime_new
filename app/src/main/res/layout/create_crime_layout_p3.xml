@@ -121,6 +121,7 @@
     <Button
         android:id="@+id/bottom_left_button"
         android:text="@string/prevers_step"
+        android:textColor="#ffffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -129,7 +130,8 @@
 
     <Button
         android:id="@+id/bottom_right_button"
-        android:text="@string/next_step"
+        android:text="@string/button_done"
+        android:textColor="#ffffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

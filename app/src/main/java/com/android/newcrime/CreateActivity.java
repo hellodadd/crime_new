@@ -66,6 +66,8 @@ public class CreateActivity extends AppCompatActivity {
             initPreferences(mContext);
         }
 
+        CommonConst.setCaseSaveOK(mContext, false);
+
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -100,6 +102,9 @@ public class CreateActivity extends AppCompatActivity {
 
 
         mCreateCrimeButton = (Button)findViewById(R.id.create_crime_button);
+        if(mIsContinue){
+            mCreateCrimeButton.setText(getString(R.string.next_step));
+        }
         mCreateCrimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

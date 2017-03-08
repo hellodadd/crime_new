@@ -45,6 +45,8 @@ public class CommonConst {
     public static final String KEY_CASE_LOCATION_4_COLLECTION_ING = "case_location_4_ing";
     public static final String KEY_CASE_LOCATION_5_COLLECTION_ING = "case_location_5_ing";
 
+    public static final String KEY_CASE_SAVE_OK = "case_save_ok";
+
     public static final String ACTION_RECEIVE_RESULT = "com.kuaikan.send_result";
 
     public static void setPreferences(Context context, String key, String value){
@@ -113,6 +115,14 @@ public class CommonConst {
             return true;
         }
         return false;
+    }
+
+    public static boolean isCaseSaveOk(Context context){
+        return getPreferences(context, KEY_CASE_SAVE_OK, false);
+    }
+
+    public static void setCaseSaveOK(Context context, boolean ok){
+        setPreferences(context, KEY_CASE_SAVE_OK, ok);
     }
 
     public static boolean isCaseInputOver(Context context){

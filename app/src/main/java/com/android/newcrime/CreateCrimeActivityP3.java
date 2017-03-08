@@ -1,8 +1,10 @@
 package com.android.newcrime;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -20,8 +22,14 @@ import android.widget.Toast;
 
 import com.android.newcrime.utils.ClearableEditText;
 import com.android.newcrime.utils.CommonConst;
+import com.android.newcrime.utils.DateTimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by zwb on 2017/3/5.
@@ -175,7 +183,9 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         mBottomRightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //saveCaseInfoXml(getApplicationContext());
+                savedata();
+                showSaveCaseInfoDialog();
             }
         });
 
@@ -315,4 +325,135 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             }
         }
     };
+
+    private void saveCaseInfoXml(Context context){
+        List<HashMap<String, String>> caseInfoList = new ArrayList<>();
+
+        HashMap<String, String> caseInfo = new LinkedHashMap<String, String>();
+        caseInfo.put("casename",CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
+        caseInfo.put("casestarttime",
+                DateTimePicker.getCurrentDashDate(
+                        CommonConst.getPreferences(context,
+                                CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis())));
+        caseInfo.put("caseendtime",DateTimePicker.getCurrentDashDate(
+                CommonConst.getPreferences(context,
+                        CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis())));
+        caseInfo.put("gpslocation",CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,""));
+        caseInfo.put("gpslat",CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,""));
+        caseInfo.put("gpslon",CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,""));
+        caseInfo.put("location1",CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,""));
+        caseInfo.put("location2",CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,""));
+        caseInfo.put("location3",CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,""));
+        caseInfo.put("location4",CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,""));
+        caseInfo.put("location5",CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
+
+        caseInfoList.add(caseInfo);
+
+        final Object[] obj = new Object[1];
+        obj[0] = caseInfoList;
+
+        XmlHandler xmlhandler = new XmlHandler();
+        xmlhandler.createCaseInfoXmlFile(obj);
+    }
+
+    private void showSaveCaseInfoDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.msg_case_info_confirm));
+        builder.setMessage(getCaseInfo(getApplicationContext()));
+        builder.setNegativeButton(getResources().getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //onBackPressed();
+                        CommonConst.setCaseSaveOK(getApplicationContext(), false);
+                    }
+                });
+        builder.setPositiveButton(getResources().getString(R.string.save),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //startActivity(new Intent(AppActivity.this, CreateActivity.class));
+                        saveCaseInfoXml(getApplicationContext());
+                        CommonConst.setCaseSaveOK(getApplicationContext(), true);
+                        finish();
+                        startActivity(new Intent(CreateCrimeActivityP3.this, AppActivity.class));
+                    }
+                });
+        builder.show();
+    }
+
+    private String getCaseInfo(Context context){
+        String info = "";
+        String caseName = CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, "");
+        String caseStartTime = DateTimePicker.getCurrentDashDate(
+                CommonConst.getPreferences(context,
+                        CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
+        String caseEndTime = DateTimePicker.getCurrentDashDate(
+                CommonConst.getPreferences(context,
+                        CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis()));
+        String caseGps = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,"");
+        String gpsLat = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,"");
+        String gpsLon = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,"");
+        String location1 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,"");
+        String location2 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,"");
+        String location3 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,"");
+        String location4 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,"");
+        String location5 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,"");
+
+        String locationFile1 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1_FILE,"");
+        String locationFile2 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2_FILE,"");
+        String locationFile3 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3_FILE,"");
+        String locationFile4 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,"");
+        String locationFile5 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,"");
+
+        String gpsLocation = "";
+        if(gpsLat.isEmpty()){
+            gpsLocation = getString(R.string.gps_location_fail);
+        }else {
+            gpsLocation = gpsLat + ", " + gpsLon;
+        }
+        String locationCollection1 = "";
+        if(locationFile1.isEmpty()){
+            locationCollection1 = getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection1 = getResources().getString(R.string.collection_over);
+        }
+        String locationCollection2 = "";
+        if(locationFile2.isEmpty()){
+            locationCollection2 = getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection2 = getResources().getString(R.string.collection_over);
+        }
+        String locationCollection3 = "";
+        if(locationFile3.isEmpty()){
+            locationCollection3 = getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection3 = getResources().getString(R.string.collection_over);
+        }
+        String locationCollection4 = "";
+        if(locationFile4.isEmpty()){
+            locationCollection4 = getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection4 = getResources().getString(R.string.collection_over);
+        }
+        String locationCollection5 = "";
+        if(locationFile5.isEmpty()){
+            locationCollection5 = getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection5 = getResources().getString(R.string.collection_over);
+        }
+
+        info = getResources().getString(R.string.case_name) + ": " + caseName + "\n"
+                + getResources().getString(R.string.crime_time_start_info) + " " + caseStartTime + "\n"
+                + getResources().getString(R.string.crime_time_end_info) + " " + caseEndTime + "\n"
+                + getResources().getString(R.string.gps_string) + " " + caseGps + "\n"
+                + getResources().getString(R.string.gps_location) + " " + gpsLocation + "\n"
+                + getResources().getString(R.string.location1) + " " + location1 + "  " + locationCollection1 + "\n"
+                + getResources().getString(R.string.location2) + " " + location2 + "  " + locationCollection2 + "\n"
+                + getResources().getString(R.string.location3) + " " + location3 + "  " + locationCollection3 + "\n"
+                + getResources().getString(R.string.location4) + " " + location4 + "  " + locationCollection4 + "\n"
+                + getResources().getString(R.string.location5) + " " + location5 + "  " + locationCollection5 + "\n";
+
+        return info;
+    }
 }
