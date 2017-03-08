@@ -21,8 +21,11 @@ import com.android.newcrime.databases.CrimeItem;
 import com.android.newcrime.databases.CrimeProvider;
 import com.android.newcrime.utils.ClearableEditText;
 import com.android.newcrime.utils.CommonConst;
+import com.android.newcrime.utils.DateTimePicker;
 
 import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 import javax.xml.datatype.Duration;
 
@@ -72,6 +75,7 @@ public class CreateActivity extends AppCompatActivity {
         mNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
         mNameCount = (TextView)findViewById(R.id.name_number_count);
 
+        mNameEditText.setText(DateTimePicker.getCurrentDate(Calendar.getInstance().getTimeInMillis()));
         mNameEditText.addTextChangedListener(mTextWatch);
 
 
@@ -91,6 +95,9 @@ public class CreateActivity extends AppCompatActivity {
         }else {
             CommonConst.setPreferences(getApplicationContext(),
                     CommonConst.KEY_CASE_NAME,mNameEditText.getText());
+            CrimeItem item = new CrimeItem();
+            item.setCaseName(mNameEditText.getText());
+            mCrimeProvider.insert(item);
             startActivity(new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class));
         }
     }

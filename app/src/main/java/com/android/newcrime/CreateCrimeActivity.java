@@ -39,7 +39,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
     ImageView mLeftButton;
-    ImageView mRightButton;
+    ImageView mRightButton;//save
     Button mTimeStartDatePicker;
     Button mTimeStartTimePicker;
     Button mTimeEndDatePicker;
@@ -107,7 +107,23 @@ public class CreateCrimeActivity extends AppCompatActivity {
         mToolbar.setTitle(getString(R.string.create_crime));
 
         mLeftButton = (ImageView) findViewById(R.id.toolbar_left_button);
+        mLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         mRightButton = (ImageView) findViewById(R.id.toolbar_right_button);
+        mRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mGpsInputEdit.getText() != null){
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_GPS_NAME,mGpsInputEdit.getText());
+                    //insert to db;
+                }
+            }
+        });
 
         mTimeStartDatePicker = (Button) findViewById(R.id.crime_time_start_picker_date);
         mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));

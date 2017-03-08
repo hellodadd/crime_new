@@ -1,21 +1,29 @@
 package com.android.newcrime;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.newcrime.utils.ClearableEditText;
 import com.android.newcrime.utils.CommonConst;
+
+import java.util.ArrayList;
 
 /**
  * Created by zwb on 2017/3/5.
@@ -52,9 +60,6 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
 
         mContext = getApplicationContext();
 
-        mIsCollectionIng = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_COLLECTION_ING, false);
-
         mToolbarLeftButton = (ImageView)findViewById(R.id.toolbar_left_button);
         mToolbarRightButton = (ImageView)findViewById(R.id.toolbar_right_button);
 
@@ -82,7 +87,14 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startCollectionLocation1();
+                if(mLocationName1.getText() == null || mLocationName1.getText().isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.location_name_empty),Toast.LENGTH_SHORT).show();
+                }else {
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_1,mLocationName1.getText());
+                    startCollectionLocation1();
+                }
             }
         });
 
@@ -110,7 +122,14 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startCollectionLocation2();
+                if(mLocationName2.getText() == null || mLocationName2.getText().isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.location_name_empty),Toast.LENGTH_SHORT).show();
+                }else {
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_2,mLocationName2.getText());
+                    startCollectionLocation2();
+                }
             }
         });
 
@@ -138,15 +157,17 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         mLocationCollection3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startCollectionLocation3();
+                if(mLocationName3.getText() == null || mLocationName3.getText().isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.location_name_empty),Toast.LENGTH_SHORT).show();
+                }else {
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_3,mLocationName3.getText());
+                    startCollectionLocation3();
+                }
             }
         });
 
-        if(mIsCollectionIng){
-            mLocationCollection1.setClickable(false);
-            mLocationCollection2.setClickable(false);
-            mLocationCollection3.setClickable(false);
-        }
 
         mBottomRightButton = (Button)findViewById(R.id.bottom_right_button);
         mBottomRightButton.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +177,46 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             }
         });
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(CommonConst.ACTION_RECEIVE_RESULT);
+        registerReceiver(receiver, filter);
+
+    }
+
+    protected void onResume(){
+        super.onResume();
+        mIsCollectionIng = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_COLLECTION_ING, false);
+        if(mIsCollectionIng){
+            mLocationCollection1.setClickable(false);
+            mLocationCollection2.setClickable(false);
+            mLocationCollection3.setClickable(false);
+        }else {
+            mLocationCollection1.setClickable(true);
+            mLocationCollection2.setClickable(true);
+            mLocationCollection3.setClickable(true);
+        }
+
+        String path1 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_1_FILE, "");
+        if(path1 != null && !path1.isEmpty()){
+            mLocationCollection1.setText(getString(R.string.collection_over));
+        }
+        String path2 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_2_FILE, "");
+        if(path2 != null && !path2.isEmpty()){
+            mLocationCollection2.setText(getString(R.string.collection_over));
+        }
+        String path3 = CommonConst.getPreferences(getApplicationContext(),
+                CommonConst.KEY_CASE_LOCATION_3_FILE, "");
+        if(path3 != null && !path3.isEmpty()){
+            mLocationCollection3.setText(getString(R.string.collection_over));
+        }
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     /**/
@@ -174,7 +235,7 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
         it.setComponent(new ComponentName("com.kuaikan.app.scenecollection",
-                "com.kuaikan.app.scenecollection.NonSimOneKeyService"));
+                "com.kuaikan.app.scenecollection.OneKeyService"));
 
         mContext.startService(it);
     }
@@ -195,7 +256,7 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
         it.setComponent(new ComponentName("com.kuaikan.app.scenecollection",
-                "com.kuaikan.app.scenecollection.NonSimOneKeyService"));
+                "com.kuaikan.app.scenecollection.OneKeyService"));
 
         mContext.startService(it);
     }
@@ -216,8 +277,44 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
         Intent it=new Intent();
         it.setAction("com.kuaikan.one_key");
         it.setComponent(new ComponentName("com.kuaikan.app.scenecollection",
-                "com.kuaikan.app.scenecollection.NonSimOneKeyService"));
+                "com.kuaikan.app.scenecollection.OneKeyService"));
 
         mContext.startService(it);
     }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(CommonConst.ACTION_RECEIVE_RESULT)){
+                Log.i("zwb","zwb ----- receiver");
+                CommonConst.setPreferences(getApplicationContext(),
+                        CommonConst.KEY_CASE_COLLECTION_ING,false);
+
+                ArrayList<String> result= (ArrayList<String>) intent.getStringArrayListExtra("result");
+                String file_path = (String) intent.getStringExtra("file_path");
+                String uuid = (String) intent.getStringExtra("uuid");
+                String path = CommonConst.copyToInternalPath(getApplicationContext(), file_path);
+
+                if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_1_COLLECTION_ING,false)){
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_1_COLLECTION_ING,false);
+                    mLocationCollection1.setText(getString(R.string.collection_over));
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_1_FILE, path);
+                }else if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_2_COLLECTION_ING,false)){
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_2_COLLECTION_ING,false);
+                    mLocationCollection2.setText(getString(R.string.collection_over));
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_2_FILE, path);
+                }else if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_3_COLLECTION_ING,false)){
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_3_COLLECTION_ING,false);
+                    mLocationCollection3.setText(getString(R.string.collection_over));
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_3_FILE, path);
+                }
+            }
+        }
+    };
 }

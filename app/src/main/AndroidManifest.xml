@@ -67,12 +67,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
+<!--
         <receiver android:name=".CollectionReceiver">
             <intent-filter>
                 <action android:name="com.kuaikan.send_result_to_xml"/>
             </intent-filter>
         </receiver>
+        -->
 
         <service android:name="com.amap.api.location.APSService"></service>
 
