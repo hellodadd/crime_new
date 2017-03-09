@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
+import com.android.newcrime.utils.CommonConst;
 import com.android.newcrime.utils.DateTimePicker;
 
 import org.xmlpull.v1.XmlSerializer;
@@ -27,14 +28,8 @@ public class XmlHandler {
 
         try {
             xmlSerializer = Xml.newSerializer();
-            File dir = new File(Environment.getExternalStorageDirectory()
-                    + "/CaseReport/"+ DateTimePicker.getCurrentDashDate(Calendar.getInstance().getTimeInMillis()));
-            if (!dir.exists()){
-                dir.mkdirs();
-            }
-
-            File file = new File(dir, "CaseInfo.xml");
-
+            File file = new File(Environment.getExternalStorageDirectory(), CommonConst.CASE_INFO_XML);
+            fileOutputStream = new FileOutputStream(file);
             fileOutputStream = new FileOutputStream(file);
 
             String encoding = "utf-8";

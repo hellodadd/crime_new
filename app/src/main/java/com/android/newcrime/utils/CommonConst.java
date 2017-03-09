@@ -49,6 +49,8 @@ public class CommonConst {
 
     public static final String ACTION_RECEIVE_RESULT = "com.kuaikan.send_result";
 
+    public static final String CASE_INFO_XML = "CaseInfo.xml";
+
     public static void setPreferences(Context context, String key, String value){
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

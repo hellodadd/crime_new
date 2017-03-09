@@ -4,8 +4,21 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+import android.util.Log;
+import android.util.Xml;
 
+import com.android.newcrime.XmlHandler;
+import com.android.newcrime.utils.DateTimePicker;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +27,7 @@ import java.util.UUID;
  */
 
 public class CrimeProvider {
+    public static final String TAG = "CrimeProvider";
     public static final String TABLE_NAME = "crime";
 
     public static final String KEY_ID = "_id";
@@ -62,12 +76,12 @@ public class CrimeProvider {
 
     private Context mContext;
 
-    public CrimeProvider(Context context){
+    public CrimeProvider(Context context) {
         mContext = context;
         db = DatabasesHelper.getDatabase(context);
     }
 
-    public void close(){
+    public void close() {
         db.close();
     }
 
@@ -82,7 +96,7 @@ public class CrimeProvider {
         cv.put(CASE_GPS_LON_COLUMN, item.getGpsLon());
         cv.put(CASE_LOCATION_1_COLUMN, item.getLocation1Name());
         cv.put(CASE_LOCATION_1_FILE_COLUMN, item.getLocation1FilePath());
-        cv.put(CASE_LOCATION_2_COLUMN,  item.getLocation2Name());
+        cv.put(CASE_LOCATION_2_COLUMN, item.getLocation2Name());
         cv.put(CASE_LOCATION_2_FILE_COLUMN, item.getLocation2FilePath());
         cv.put(CASE_LOCATION_3_COLUMN, item.getLocation3Name());
         cv.put(CASE_LOCATION_3_FILE_COLUMN, item.getLocation3FilePath());
@@ -111,7 +125,7 @@ public class CrimeProvider {
         cv.put(CASE_GPS_LON_COLUMN, item.getGpsLon());
         cv.put(CASE_LOCATION_1_COLUMN, item.getLocation1Name());
         cv.put(CASE_LOCATION_1_FILE_COLUMN, item.getLocation1FilePath());
-        cv.put(CASE_LOCATION_2_COLUMN,  item.getLocation2Name());
+        cv.put(CASE_LOCATION_2_COLUMN, item.getLocation2Name());
         cv.put(CASE_LOCATION_2_FILE_COLUMN, item.getLocation2FilePath());
         cv.put(CASE_LOCATION_3_COLUMN, item.getLocation3Name());
         cv.put(CASE_LOCATION_3_FILE_COLUMN, item.getLocation3FilePath());
@@ -125,27 +139,98 @@ public class CrimeProvider {
 
     public boolean delete(long id) {
         String where = KEY_ID + "=" + id;
-        return db.delete(TABLE_NAME, where , null) > 0;
+        return db.delete(TABLE_NAME, where, null) > 0;
     }
 
     public List<CrimeItem> getAll() {
         List<CrimeItem> result = new ArrayList<>();
         String where = KEY_ID + ">=" + 0;
         Cursor cursor = db.query(
-                TABLE_NAME, null, where, null, null, null, null, null);
+                TABLE_NAME, null, null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             CrimeItem item = new CrimeItem();
+            item.setCaseId(cursor.getString(cursor.getColumnIndex(CASE_ID_COLUMN)));
+            item.setCaseName(cursor.getString(cursor.getColumnIndex(CASE_NAME_COLUMN)));
+            item.setCaseStartTime(cursor.getInt(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
+            item.setCaseEndTime(cursor.getInt(cursor.getColumnIndex(CASE_END_TIME_COLUMN)));
+            item.setGpsLocationName(cursor.getString(cursor.getColumnIndex(CASE_GPS_NAME_COLUMN)));
+            item.setGpsLat(cursor.getString(cursor.getColumnIndex(CASE_GPS_LAT_COLUMN)));
+            item.setGpsLon(cursor.getString(cursor.getColumnIndex(CASE_GPS_LON_COLUMN)));
+            item.setLocation1Name(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_1_COLUMN)));
+            item.setLocation1FilePath(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_1_FILE_COLUMN)));
+            item.setLocation2Name(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_2_COLUMN)));
+            item.setLocation2FilePath(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_2_FILE_COLUMN)));
+            item.setLocation3Name(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_3_COLUMN)));
+            item.setLocation3FilePath(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_3_FILE_COLUMN)));
+            item.setLocation4Name(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_4_COLUMN)));
+            item.setLocation4FilePath(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_4_FILE_COLUMN)));
+            item.setLocation5Name(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_5_COLUMN)));
+            item.setLocation5FilePath(cursor.getString(cursor.getColumnIndex(CASE_LOCATION_5_FILE_COLUMN)));
+            //String caseId = cursor.getString(cursor.getColumnIndex("case_id"));
+            //Log.e("zwb", "zwb ------ caseid = " + caseId);
+            result.add(item);
         }
 
         cursor.close();
         return result;
     }
 
-    public static String getUUID(){
+    public CrimeItem createBaseMsgXml(String id){
+        CrimeItem item = new CrimeItem();
+        String where = CASE_ID_COLUMN + " = '" + id;
+        Cursor cursor = db.query(
+                TABLE_NAME, null, where, null, null, null, null, null);
+
+        return item;
+    }
+
+    public static String getUUID() {
         String s = UUID.randomUUID().toString();
         //去掉“-”符号
-        String replace = s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
+        String replace = s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24);
         return replace;
     }
+
+    public void createScenesInfoXml() {
+        List<CrimeItem> mItem = new ArrayList<>();
+        List<HashMap<String, String>> mBaseInfoList = new ArrayList<>();
+        mItem = getAll();
+
+        Log.d("zwb", "createScenesInfoXml size = " + mItem.size());
+        if (mItem.size() > 0) {
+            for (int i = 0; i < mItem.size(); i++) {
+                CrimeItem item = mItem.get(i);
+
+                //scene
+                HashMap<String, String> mBaseInfo = new LinkedHashMap<String, String>();
+                mBaseInfo.put("id", item.getCaseId());
+                mBaseInfo.put("casename", item.getCaseName());
+                mBaseInfo.put("casestarttime", DateTimePicker.getCurrentDashTime(item.getCaseStartTime()));
+                mBaseInfo.put("caseendtime", DateTimePicker.getCurrentDashTime(item.getCaseEndTime()));
+                mBaseInfo.put("gpslocation", item.getGpsLocationName());
+                mBaseInfo.put("gpslat", item.getGpsLat());
+                mBaseInfo.put("gpslon", item.getGpsLon());
+                mBaseInfo.put("location1", item.getLocation1Name());
+                mBaseInfo.put("location1_file", item.getLocation1FilePath());
+                mBaseInfo.put("location2", item.getLocation2Name());
+                mBaseInfo.put("location2_file", item.getLocation2FilePath());
+                mBaseInfo.put("location3", item.getLocation3Name());
+                mBaseInfo.put("location3_file", item.getLocation3FilePath());
+                mBaseInfo.put("location4", item.getLocation4Name());
+                mBaseInfo.put("location4_file", item.getLocation4FilePath());
+                mBaseInfo.put("location5", item.getLocation5Name());
+                mBaseInfo.put("location5_file", item.getLocation5FilePath());
+
+                mBaseInfoList.add(mBaseInfo);
+            }
+        }
+
+        final Object[] obj = new Object[1];
+        obj[0] = mBaseInfoList;
+
+        XmlHandler xmlhandler = new XmlHandler();
+        xmlhandler.createCaseInfoXmlFile(obj);
+    }
 }
+

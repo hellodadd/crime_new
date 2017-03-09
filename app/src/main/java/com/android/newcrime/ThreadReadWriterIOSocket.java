@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
+import com.android.newcrime.utils.CommonConst;
 import com.android.newcrime.utils.FileHelper;
 import com.android.newcrime.utils.Utils;
 
@@ -67,7 +68,7 @@ public class ThreadReadWriterIOSocket implements Runnable{
 
                     Log.v(TAG, Thread.currentThread().getName() + "---->" + "**currCMD ==== " + currCMD);
 
-                    //DataInitial dataInitial = new DataInitial(context);
+                    DataInitial dataInitial = new DataInitial(context);
                     /* 根据命令分别处理数据 */
                     if (currcmdinfo != null) {
                         Log.d(TAG, "Command = "+currcmdinfo[1]);
@@ -124,21 +125,17 @@ public class ThreadReadWriterIOSocket implements Runnable{
 
                                 break;
                             case 11: //获取现场列表命令
-                                File getfile = new File(mSceneListPath);
-                                if(getfile.exists()) deleteFiles(getfile);
-                                filebytes = receiveDataFromSocketByte(in, currcmdinfo);
-                                /*//組成BaseMsg.xml
+                                //組成BaseMsg.xml
                                 result = dataInitial.CreateBaseMsg();
 
                                 //获取BaseMsg.xml
-                                */
-                                File fileBaseMsgs = FileHelper.newFile("ScenesMsg.xml");
-                                if (/*result && */fileBaseMsgs.exists() == true) {
+                                File fileBaseMsgs = FileHelper.newFile(CommonConst.CASE_INFO_XML);
+                                if (result && fileBaseMsgs.exists() == true) {
                                     byte[] abyte = FileHelper.readFile(fileBaseMsgs);
                                     concatCmdline(out, currcmdinfo, abyte.length);
                                     sendDeviceinfo(out, currcmdinfo, fileBaseMsgs);
                                 } else {
-                                    String errstr= "Login Fail";
+                                    String errstr= "getCase Fail";
                                     byte [] errbyte = errstr.getBytes("UTF-8");
                                     concatCmdline(out, currcmdinfo, errbyte.length);
                                     sendErrorString(out, errbyte);
