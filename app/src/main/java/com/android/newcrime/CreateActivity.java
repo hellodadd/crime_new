@@ -119,9 +119,6 @@ public class CreateActivity extends AppCompatActivity {
         }else {
             CommonConst.setPreferences(getApplicationContext(),
                     CommonConst.KEY_CASE_NAME,mNameEditText.getText());
-            CrimeItem item = new CrimeItem();
-            item.setCaseName(mNameEditText.getText());
-            mCrimeProvider.insert(item);
             Intent intent = new Intent(CreateActivity.this, com.android.newcrime.CreateCrimeActivity.class);
             intent.putExtra("continue", mIsContinue);
             startActivity(intent);

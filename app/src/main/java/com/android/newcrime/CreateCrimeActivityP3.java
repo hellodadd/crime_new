@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.newcrime.databases.CrimeItem;
+import com.android.newcrime.databases.CrimeProvider;
 import com.android.newcrime.utils.ClearableEditText;
 import com.android.newcrime.utils.CommonConst;
 import com.android.newcrime.utils.DateTimePicker;
@@ -356,6 +358,25 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         xmlhandler.createCaseInfoXmlFile(obj);
     }
 
+    private void saveToDataBase(Context context){
+        CrimeProvider provider = new CrimeProvider(context);
+        CrimeItem item = new CrimeItem();
+        item.setCaseName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
+        item.setCaseStartTime(CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
+        item.setCaseEndTime(CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis()));
+        item.setGpsLocationName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,""));
+        item.setGpsLat(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,""));
+        item.setGpsLon(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,""));
+        item.setLocation1Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,""));
+        item.setLocation2Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,""));
+        item.setLocation3Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,""));
+        item.setLocation4Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,""));
+        item.setLocation5Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
+        provider.insert(item);
+    }
+
     private void showSaveCaseInfoDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.msg_case_info_confirm));
@@ -373,7 +394,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //startActivity(new Intent(AppActivity.this, CreateActivity.class));
-                        saveCaseInfoXml(getApplicationContext());
+                        saveToDataBase(getApplicationContext());
                         CommonConst.setCaseSaveOK(getApplicationContext(), true);
                         finish();
                         startActivity(new Intent(CreateCrimeActivityP3.this, AppActivity.class));

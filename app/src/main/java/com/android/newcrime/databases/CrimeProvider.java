@@ -2,8 +2,11 @@ package com.android.newcrime.databases;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -123,6 +126,20 @@ public class CrimeProvider {
     public boolean delete(long id) {
         String where = KEY_ID + "=" + id;
         return db.delete(TABLE_NAME, where , null) > 0;
+    }
+
+    public List<CrimeItem> getAll() {
+        List<CrimeItem> result = new ArrayList<>();
+        String where = KEY_ID + ">=" + 0;
+        Cursor cursor = db.query(
+                TABLE_NAME, null, where, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            CrimeItem item = new CrimeItem();
+        }
+
+        cursor.close();
+        return result;
     }
 
     public static String getUUID(){
