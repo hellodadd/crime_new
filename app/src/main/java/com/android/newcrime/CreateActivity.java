@@ -108,8 +108,10 @@ public class CreateActivity extends AppCompatActivity {
         mCreateCrimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               createNewCase();
+                createNewCase();
                 //mCrimeProvider.createBaseMsgXml("d8818f0feaec4c049eff8c6e0ba796ba");
+                //DataInitial dataInitial = new DataInitial(getApplicationContext());
+                //dataInitial.CreateBaseMsgIdZip("7f7acf4f8247450a93cb5ab67349921d");
             }
         });
     }

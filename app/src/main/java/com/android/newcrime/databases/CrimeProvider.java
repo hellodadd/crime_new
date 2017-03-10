@@ -152,8 +152,8 @@ public class CrimeProvider {
             CrimeItem item = new CrimeItem();
             item.setCaseId(cursor.getString(cursor.getColumnIndex(CASE_ID_COLUMN)));
             item.setCaseName(cursor.getString(cursor.getColumnIndex(CASE_NAME_COLUMN)));
-            item.setCaseStartTime(cursor.getInt(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
-            item.setCaseEndTime(cursor.getInt(cursor.getColumnIndex(CASE_END_TIME_COLUMN)));
+            item.setCaseStartTime(cursor.getLong(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
+            item.setCaseEndTime(cursor.getLong(cursor.getColumnIndex(CASE_END_TIME_COLUMN)));
             item.setGpsLocationName(cursor.getString(cursor.getColumnIndex(CASE_GPS_NAME_COLUMN)));
             item.setGpsLat(cursor.getString(cursor.getColumnIndex(CASE_GPS_LAT_COLUMN)));
             item.setGpsLon(cursor.getString(cursor.getColumnIndex(CASE_GPS_LON_COLUMN)));
@@ -186,22 +186,22 @@ public class CrimeProvider {
             //String name = cursor.getString(2);
             //Log.e("zwb", "zwb ----- name = " + name);
             item.setCaseId(id);
-            item.setCaseName(cursor.getString(1));
-            item.setCaseStartTime(cursor.getInt(2));
-            item.setCaseEndTime(cursor.getInt(3));
-            item.setGpsLocationName(cursor.getString(4));
-            item.setGpsLat(cursor.getString(5));
-            item.setGpsLon(cursor.getString(6));
-            item.setLocation1Name(cursor.getString(7));
-            item.setLocation1FilePath(cursor.getString(8));
-            item.setLocation2Name(cursor.getString(9));
-            item.setLocation2FilePath(cursor.getString(10));
-            item.setLocation3Name(cursor.getString(11));
-            item.setLocation3FilePath(cursor.getString(12));
-            item.setLocation4Name(cursor.getString(13));
-            item.setLocation4FilePath(cursor.getString(14));
-            item.setLocation5Name(cursor.getString(15));
-            item.setLocation5FilePath(cursor.getString(16));
+            item.setCaseName(cursor.getString(2));
+            item.setCaseStartTime(cursor.getLong(3));
+            item.setCaseEndTime(cursor.getLong(4));
+            item.setGpsLocationName(cursor.getString(5));
+            item.setGpsLat(cursor.getString(6));
+            item.setGpsLon(cursor.getString(7));
+            item.setLocation1Name(cursor.getString(8));
+            item.setLocation1FilePath(cursor.getString(9));
+            item.setLocation2Name(cursor.getString(10));
+            item.setLocation2FilePath(cursor.getString(11));
+            item.setLocation3Name(cursor.getString(12));
+            item.setLocation3FilePath(cursor.getString(13));
+            item.setLocation4Name(cursor.getString(14));
+            item.setLocation4FilePath(cursor.getString(15));
+            item.setLocation5Name(cursor.getString(16));
+            item.setLocation5FilePath(cursor.getString(17));
         }
 
         //cursor.close();
@@ -229,6 +229,8 @@ public class CrimeProvider {
                 HashMap<String, String> mBaseInfo = new LinkedHashMap<String, String>();
                 mBaseInfo.put("id", item.getCaseId());
                 mBaseInfo.put("casename", item.getCaseName());
+                Log.e("zwb", " zwb xml time =  " + item.getCaseStartTime());
+                Log.e("zwb", " zwb xml time xxx =  " + DateTimePicker.getCurrentDashTime(item.getCaseStartTime()));
                 mBaseInfo.put("casestarttime", DateTimePicker.getCurrentDashTime(item.getCaseStartTime()));
                 mBaseInfo.put("caseendtime", DateTimePicker.getCurrentDashTime(item.getCaseEndTime()));
                 mBaseInfo.put("gpslocation", item.getGpsLocationName());

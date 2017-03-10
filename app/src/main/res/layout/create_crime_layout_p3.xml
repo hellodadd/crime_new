@@ -57,6 +57,7 @@
             android:id="@+id/location4_num_count"
             android:textSize="@dimen/text_size"
             android:paddingLeft="@dimen/paddingleft"
+            android:text="0/35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -71,10 +72,12 @@
 
     <Button
         android:id="@+id/location_collection_4_button"
-        android:layout_below="@+id/location_4_editview"
+        android:layout_below="@id/location_4_editview"
         android:text="@string/collection"
         android:textSize="@dimen/text_size"
         android:paddingLeft="@dimen/paddingleft"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -115,6 +118,8 @@
         android:text="@string/collection"
         android:paddingLeft="@dimen/paddingleft"
         android:textSize="@dimen/text_size"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

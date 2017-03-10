@@ -98,6 +98,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 temp = charSequence.toString();
+                if(mLocationNumCount4 != null)
                 mLocationNumCount4.setText(temp.length() + "/35");
             }
 
@@ -118,6 +119,9 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         mLocationCollection4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(CommonConst.isCollectionDone(getApplicationContext(), 4)){
+                    return;
+                }
                 if(mLocationName4.getText() == null || mLocationName4.getText().isEmpty()){
                     Toast.makeText(getApplicationContext(),
                             getResources().getString(R.string.location_name_empty),Toast.LENGTH_SHORT).show();
@@ -129,11 +133,6 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             }
         });
 
-        String locatonFile4 = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_LOCATION_4_FILE, "");
-        if(locatonFile4 != null && !locatonFile4.isEmpty()){
-            mLocationCollection4.setText(getResources().getString(R.string.collection_over));
-        }
 
         mLocationName5 = (ClearableEditText) findViewById(R.id.location_5_editview);
         mLocationName5.setFilters(new InputFilter[]{new InputFilter.LengthFilter(35)});
@@ -146,6 +145,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 temp = charSequence.toString();
+                if(mLocationNumCount5 != null)
                 mLocationNumCount5.setText(temp.length() + "/35");
             }
 
@@ -164,6 +164,9 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         mLocationCollection5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(CommonConst.isCollectionDone(getApplicationContext(), 5)){
+                    return;
+                }
                 if(mLocationName5.getText() == null || mLocationName5.getText().isEmpty()){
                     Toast.makeText(getApplicationContext(),
                             getResources().getString(R.string.location_name_empty),Toast.LENGTH_SHORT).show();
@@ -174,11 +177,6 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                 }
             }
         });
-        String locatonFile5 = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_LOCATION_5_FILE, "");
-        if(locatonFile5 != null && !locatonFile5.isEmpty()){
-            mLocationCollection5.setText(getResources().getString(R.string.collection_over));
-        }
 
 
         mBottomRightButton = (Button)findViewById(R.id.bottom_right_button);
@@ -221,15 +219,22 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             mBottomRightButton.setEnabled(true);
         }
 
-        String path4 = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_LOCATION_4_FILE, "");
-        if(path4 != null && !path4.isEmpty()){
+        if(CommonConst.isCollectionDone(getApplicationContext(),4)){
+            mLocationCollection4.setBackground(getResources().getDrawable(R.drawable.button_succses));
             mLocationCollection4.setText(getString(R.string.collection_over));
         }
-        String path5 = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_LOCATION_5_FILE, "");
-        if(path5 != null && !path5.isEmpty()){
+
+        if(CommonConst.isCollectionIng(getApplicationContext(), 4)){
+            mLocationCollection4.setText(getString(R.string.collection_runing));
+        }
+
+        if(CommonConst.isCollectionDone(getApplicationContext(),5)){
+            mLocationCollection5.setBackground(getResources().getDrawable(R.drawable.button_succses));
             mLocationCollection5.setText(getString(R.string.collection_over));
+        }
+
+        if(CommonConst.isCollectionIng(getApplicationContext(), 5)){
+            mLocationCollection5.setText(getString(R.string.collection_runing));
         }
     }
 
@@ -306,6 +311,9 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                 CommonConst.setPreferences(getApplicationContext(),
                         CommonConst.KEY_CASE_COLLECTION_ING,false);
 
+                mLocationCollection4.setClickable(true);
+                mLocationCollection5.setClickable(true);
+
                 ArrayList<String> result= (ArrayList<String>) intent.getStringArrayListExtra("result");
                 String file_path = (String) intent.getStringExtra("file_path");
                 String uuid = (String) intent.getStringExtra("uuid");
@@ -314,12 +322,18 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                 if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_4_COLLECTION_ING,false)){
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_4_COLLECTION_ING,false);
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_4_COLLECTION_DONE,true);
+                    mLocationCollection4.setBackground(getResources().getDrawable(R.drawable.button_succses));
                     mLocationCollection4.setText(getString(R.string.collection_over));
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_4_FILE, path);
                 }else if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_5_COLLECTION_ING,false)){
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_5_COLLECTION_ING,false);
+                    CommonConst.setPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_5_COLLECTION_DONE,true);
+                    mLocationCollection5.setBackground(getResources().getDrawable(R.drawable.button_succses));
                     mLocationCollection5.setText(getString(R.string.collection_over));
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_5_FILE, path);
@@ -362,6 +376,8 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         CrimeProvider provider = new CrimeProvider(context);
         CrimeItem item = new CrimeItem();
         item.setCaseName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
+        Log.e("zwb", "zwb -------- time sava = " + CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
         item.setCaseStartTime(CommonConst.getPreferences(context,
                 CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
         item.setCaseEndTime(CommonConst.getPreferences(context,
@@ -370,10 +386,15 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         item.setGpsLat(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,""));
         item.setGpsLon(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,""));
         item.setLocation1Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,""));
+        item.setLocation1FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1_FILE,""));
         item.setLocation2Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,""));
+        item.setLocation2FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2_FILE,""));
         item.setLocation3Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,""));
+        item.setLocation3FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3_FILE,""));
         item.setLocation4Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,""));
+        item.setLocation4FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,""));
         item.setLocation5Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
+        item.setLocation5FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5_FILE,""));
         provider.insert(item);
     }
 
@@ -406,10 +427,10 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
     private String getCaseInfo(Context context){
         String info = "";
         String caseName = CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, "");
-        String caseStartTime = DateTimePicker.getCurrentDashDate(
+        String caseStartTime = DateTimePicker.getCurrentDashTime(
                 CommonConst.getPreferences(context,
                         CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
-        String caseEndTime = DateTimePicker.getCurrentDashDate(
+        String caseEndTime = DateTimePicker.getCurrentDashTime(
                 CommonConst.getPreferences(context,
                         CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis()));
         String caseGps = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,"");

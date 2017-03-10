@@ -45,6 +45,12 @@ public class CommonConst {
     public static final String KEY_CASE_LOCATION_4_COLLECTION_ING = "case_location_4_ing";
     public static final String KEY_CASE_LOCATION_5_COLLECTION_ING = "case_location_5_ing";
 
+    public static final String KEY_CASE_LOCATION_1_COLLECTION_DONE = "case_location_1_done";
+    public static final String KEY_CASE_LOCATION_2_COLLECTION_DONE = "case_location_2_done";
+    public static final String KEY_CASE_LOCATION_3_COLLECTION_DONE = "case_location_3_done";
+    public static final String KEY_CASE_LOCATION_4_COLLECTION_DONE = "case_location_4_done";
+    public static final String KEY_CASE_LOCATION_5_COLLECTION_DONE = "case_location_5_done";
+
     public static final String KEY_CASE_SAVE_OK = "case_save_ok";
 
     public static final String ACTION_RECEIVE_RESULT = "com.kuaikan.send_result";
@@ -109,6 +115,16 @@ public class CommonConst {
         editor.putString(KEY_CASE_LOCATION_5, item.getLocation5Name());
         editor.putString(KEY_CASE_LOCATION_5_FILE, item.getLocation5FilePath());
         editor.putBoolean(KEY_CASE_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_DONE, false);
+        editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_DONE, false);
+        editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_DONE, false);
+        editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_DONE, false);
+        editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_DONE, false);
         editor.commit();
     }
 
@@ -126,6 +142,46 @@ public class CommonConst {
 
     public static void setCaseSaveOK(Context context, boolean ok){
         setPreferences(context, KEY_CASE_SAVE_OK, ok);
+    }
+
+   public static boolean isCollectionDone(Context context, int location){
+       if(location == 1){
+           return CommonConst.getPreferences(context,
+                   CommonConst.KEY_CASE_LOCATION_1_COLLECTION_DONE, false);
+       }else if(location == 2){
+           return CommonConst.getPreferences(context,
+                   CommonConst.KEY_CASE_LOCATION_2_COLLECTION_DONE, false);
+       }else if(location == 3){
+           return CommonConst.getPreferences(context,
+                   CommonConst.KEY_CASE_LOCATION_3_COLLECTION_DONE, false);
+       }else if(location == 4){
+           return CommonConst.getPreferences(context,
+                   CommonConst.KEY_CASE_LOCATION_4_COLLECTION_DONE, false);
+       }else if(location == 5){
+           return CommonConst.getPreferences(context,
+                   CommonConst.KEY_CASE_LOCATION_5_COLLECTION_DONE, false);
+       }
+       return false;
+   }
+
+    public static boolean isCollectionIng(Context context, int location){
+        if(location == 1){
+            return CommonConst.getPreferences(context,
+                    CommonConst.KEY_CASE_LOCATION_1_COLLECTION_ING, false);
+        }else if(location == 2){
+            return CommonConst.getPreferences(context,
+                    CommonConst.KEY_CASE_LOCATION_2_COLLECTION_ING, false);
+        }else if(location == 3){
+            return CommonConst.getPreferences(context,
+                    CommonConst.KEY_CASE_LOCATION_3_COLLECTION_ING, false);
+        }else if(location == 4){
+            return CommonConst.getPreferences(context,
+                    CommonConst.KEY_CASE_LOCATION_4_COLLECTION_ING, false);
+        }else if(location == 5){
+            return CommonConst.getPreferences(context,
+                    CommonConst.KEY_CASE_LOCATION_5_COLLECTION_ING, false);
+        }
+        return false;
     }
 
     public static boolean isCaseInputOver(Context context){

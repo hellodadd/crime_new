@@ -181,6 +181,7 @@ public class ThreadReadWriterIOSocket implements Runnable{
                                 //Wait command 0
                                 //SocketService.ioThreadFlag=false;
                                 */
+                                concatCmdline(out, currcmdinfo, 0);
                                 break;
                             case 14: //删除现场信息命令
                                 /*
@@ -207,9 +208,11 @@ public class ThreadReadWriterIOSocket implements Runnable{
                             case 22: //获取现场基站信息命令
                                 break;
                             case 23: //回写现场基站状态命令
+                                /*
                                 receiveDataFromSocket(in, currcmdinfo);
                                 concatCmdline(out, currcmdinfo,1);
                                 sendResult(out,false);
+                                */
                                 break;
                             case 24: //删除现场基站信息命令
                                 break;

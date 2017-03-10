@@ -76,6 +76,8 @@
         android:text="@string/collection"
         android:textSize="@dimen/text_size"
         android:paddingLeft="@dimen/paddingleft"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -116,6 +118,8 @@
         android:text="@string/collection"
         android:paddingLeft="@dimen/paddingleft"
         android:textSize="@dimen/text_size"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -156,6 +160,8 @@
         android:text="@string/collection"
         android:textSize="@dimen/text_size"
         android:paddingLeft="@dimen/paddingleft"
+        android:textColor="#ffffffff"
+        android:background="@drawable/button_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
