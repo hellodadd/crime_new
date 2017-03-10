@@ -176,12 +176,35 @@ public class CrimeProvider {
         return result;
     }
 
-    public CrimeItem createBaseMsgXml(String id){
+    public CrimeItem getItem(String id){
         CrimeItem item = new CrimeItem();
-        String where = CASE_ID_COLUMN + " = '" + id;
+        String where = CASE_ID_COLUMN + " = '" + id + "'";
         Cursor cursor = db.query(
                 TABLE_NAME, null, where, null, null, null, null, null);
+        Log.e("zwb", "zwb ----- name = ggggggg = " + cursor);
+        if(cursor.moveToFirst()){
+            //String name = cursor.getString(2);
+            //Log.e("zwb", "zwb ----- name = " + name);
+            item.setCaseId(id);
+            item.setCaseName(cursor.getString(1));
+            item.setCaseStartTime(cursor.getInt(2));
+            item.setCaseEndTime(cursor.getInt(3));
+            item.setGpsLocationName(cursor.getString(4));
+            item.setGpsLat(cursor.getString(5));
+            item.setGpsLon(cursor.getString(6));
+            item.setLocation1Name(cursor.getString(7));
+            item.setLocation1FilePath(cursor.getString(8));
+            item.setLocation2Name(cursor.getString(9));
+            item.setLocation2FilePath(cursor.getString(10));
+            item.setLocation3Name(cursor.getString(11));
+            item.setLocation3FilePath(cursor.getString(12));
+            item.setLocation4Name(cursor.getString(13));
+            item.setLocation4FilePath(cursor.getString(14));
+            item.setLocation5Name(cursor.getString(15));
+            item.setLocation5FilePath(cursor.getString(16));
+        }
 
+        //cursor.close();
         return item;
     }
 
@@ -231,6 +254,50 @@ public class CrimeProvider {
 
         XmlHandler xmlhandler = new XmlHandler();
         xmlhandler.createCaseInfoXmlFile(obj);
+    }
+
+    public CrimeItem createBaseMsgXml(String id){
+        List<CrimeItem> mItem = new ArrayList<>();
+        List<HashMap<String, String>> mBaseInfoList = new ArrayList<>();
+
+        CrimeItem record = getItem(id);
+        if(record == null)return null;
+        mItem.add(record);
+        if (mItem.size() > 0) {
+            for (int i = 0; i < mItem.size(); i++) {
+                CrimeItem item = mItem.get(i);
+
+                //scene
+                HashMap<String, String> mBaseInfo = new LinkedHashMap<String, String>();
+                mBaseInfo.put("id", item.getCaseId());
+                mBaseInfo.put("casename", item.getCaseName());
+                mBaseInfo.put("casestarttime", DateTimePicker.getCurrentDashTime(item.getCaseStartTime()));
+                mBaseInfo.put("caseendtime", DateTimePicker.getCurrentDashTime(item.getCaseEndTime()));
+                mBaseInfo.put("gpslocation", item.getGpsLocationName());
+                mBaseInfo.put("gpslat", item.getGpsLat());
+                mBaseInfo.put("gpslon", item.getGpsLon());
+                mBaseInfo.put("location1", item.getLocation1Name());
+                mBaseInfo.put("location1_file", item.getLocation1FilePath());
+                mBaseInfo.put("location2", item.getLocation2Name());
+                mBaseInfo.put("location2_file", item.getLocation2FilePath());
+                mBaseInfo.put("location3", item.getLocation3Name());
+                mBaseInfo.put("location3_file", item.getLocation3FilePath());
+                mBaseInfo.put("location4", item.getLocation4Name());
+                mBaseInfo.put("location4_file", item.getLocation4FilePath());
+                mBaseInfo.put("location5", item.getLocation5Name());
+                mBaseInfo.put("location5_file", item.getLocation5FilePath());
+
+                mBaseInfoList.add(mBaseInfo);
+            }
+        }
+
+        final Object[] obj = new Object[1];
+        obj[0] = mBaseInfoList;
+
+        XmlHandler xmlhandler = new XmlHandler();
+        xmlhandler.createCaseInfoXmlFile(obj);
+
+        return record;
     }
 }
 

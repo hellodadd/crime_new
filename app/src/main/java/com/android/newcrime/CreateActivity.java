@@ -109,6 +109,7 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                createNewCase();
+                //mCrimeProvider.createBaseMsgXml("d8818f0feaec4c049eff8c6e0ba796ba");
             }
         });
     }

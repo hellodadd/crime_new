@@ -143,12 +143,12 @@ public class ThreadReadWriterIOSocket implements Runnable{
                                 SocketService.ioThreadFlag=false;
                                 break;
                             case 12: //获取现场信息命令
-                                /*
+
                                 receiveString = receiveDataFromSocket(in, currcmdinfo);
 
                                 //組成單一BaseMsg.xml
                                 if (dataInitial.CreateBaseMsgIdZip(receiveString)) {
-                                    File fileBaseMsg = FileHelper.newFile("SceneMsg.zip");
+                                    File fileBaseMsg = FileHelper.newFile(CommonConst.CASE_INFO_ZIP);
                                     byte[] abyte = FileHelper.readFile(fileBaseMsg);
                                     concatCmdline(out, currcmdinfo, abyte.length);
                                     sendDeviceinfoZip(out, currcmdinfo, fileBaseMsg);
@@ -161,7 +161,6 @@ public class ThreadReadWriterIOSocket implements Runnable{
                                 }
                                 //Wait command 13
                                 //SocketService.ioThreadFlag=false;
-                                */
                                 break;
                             case 13: //回写现勘编号命令
                                 /*
