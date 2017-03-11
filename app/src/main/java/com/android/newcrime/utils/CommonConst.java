@@ -21,6 +21,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CommonConst {
     public static final String PREFERENCES_NAME = "case_new_item";
+    public static final String KEY_CASE_ID = "case_id";
     public static final String KEY_CASE_NAME = "case_name";
     public static final String KEY_CASE_START_TIME = "case_start_time";
     public static final String KEY_CASE_END_TIME = "case_end_time";
@@ -98,6 +99,7 @@ public class CommonConst {
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         CrimeItem item = new CrimeItem();
+        editor.putLong(KEY_CASE_ID, item.getId());
         editor.putString(KEY_CASE_NAME, item.getCaseName());
         editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
         editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
@@ -125,6 +127,68 @@ public class CommonConst {
         editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_DONE, false);
         editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_DONE, false);
         editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_DONE, false);
+        editor.putBoolean(KEY_CASE_SAVE_OK, false);
+        editor.commit();
+    }
+
+    public static void initPreferences(Context context, CrimeItem item){
+        SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        Log.e("zwb", "zwb ---- init keyid = " + item.getId());
+        editor.putLong(KEY_CASE_ID, item.getId());
+        editor.putString(KEY_CASE_NAME, item.getCaseName());
+        editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
+        editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
+        editor.putString(KEY_CASE_GPS_NAME, item.getGpsLocationName());
+        editor.putString(KEY_CASE_GPS_LAT, item.getGpsLat());
+        editor.putString(KEY_CASE_GPS_LON, item.getGpsLon());
+        editor.putString(KEY_CASE_LOCATION_1, item.getLocation1Name());
+        editor.putString(KEY_CASE_LOCATION_1_FILE, item.getLocation1FilePath());
+        editor.putString(KEY_CASE_LOCATION_2, item.getLocation2Name());
+        editor.putString(KEY_CASE_LOCATION_2_FILE, item.getLocation2FilePath());
+        editor.putString(KEY_CASE_LOCATION_3, item.getLocation3Name());
+        editor.putString(KEY_CASE_LOCATION_3_FILE, item.getLocation3FilePath());
+        editor.putString(KEY_CASE_LOCATION_4, item.getLocation4Name());
+        editor.putString(KEY_CASE_LOCATION_4_FILE, item.getLocation4FilePath());
+        editor.putString(KEY_CASE_LOCATION_5, item.getLocation5Name());
+        editor.putString(KEY_CASE_LOCATION_5_FILE, item.getLocation5FilePath());
+        editor.putBoolean(KEY_CASE_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_ING, false);
+        String file1 = item.getLocation1FilePath();
+        String file2 = item.getLocation2FilePath();
+        String file3 = item.getLocation3FilePath();
+        String file4 = item.getLocation4FilePath();
+        String file5 = item.getLocation5FilePath();
+        if(file1 == null || file1.isEmpty()){
+            editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_DONE, false);
+        }else {
+            editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_DONE, true);
+        }
+        if(file2 == null || file2.isEmpty()){
+            editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_DONE, false);
+        }else{
+            editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_DONE, true);
+        }
+        if(file3 == null || file3.isEmpty()){
+            editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_DONE, false);
+        }else{
+            editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_DONE, true);
+        }
+        if(file4 == null || file4.isEmpty()){
+            editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_DONE, false);
+        }else{
+            editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_DONE, true);
+        }
+        if(file5 == null || file4.isEmpty()){
+            editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_DONE, false);
+        }else{
+            editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_DONE, true);
+        }
+        editor.putBoolean(KEY_CASE_SAVE_OK, false);
         editor.commit();
     }
 

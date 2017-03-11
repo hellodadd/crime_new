@@ -104,7 +104,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
         mLocationClient = new AMapLocationClient(getApplicationContext());
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
         mLocationOption.setOnceLocationLatest(true);
         mLocationOption.setNeedAddress(true);
         //给定位客户端对象设置定位参数
@@ -229,6 +229,11 @@ public class CreateCrimeActivity extends AppCompatActivity {
             }
         });
     }
+
+    protected void onDestroy(){
+        super.onDestroy();
+    }
+
 
     private TextWatcher mTextWatch = new TextWatcher() {
         private String temp;

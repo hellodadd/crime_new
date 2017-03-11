@@ -115,7 +115,6 @@ public class CrimeProvider {
         String where = KEY_ID + "=" + item.getId();
 
         ContentValues cv = new ContentValues();
-
         cv.put(CASE_ID_COLUMN, item.getCaseId());
         cv.put(CASE_NAME_COLUMN, item.getCaseName());
         cv.put(CASE_START_TIME_COLUMN, item.getCaseStartTime());
@@ -134,7 +133,8 @@ public class CrimeProvider {
         cv.put(CASE_LOCATION_5_COLUMN, item.getLocation5Name());
         cv.put(CASE_LOCATION_5_FILE_COLUMN, item.getLocation5FilePath());
 
-        return db.update(TABLE_NAME, cv, where, null) > 0;
+        boolean result = db.update(TABLE_NAME, cv, where, null) > 0;
+        return result;
     }
 
     public boolean delete(long id) {
@@ -150,6 +150,7 @@ public class CrimeProvider {
 
         while (cursor.moveToNext()) {
             CrimeItem item = new CrimeItem();
+            item.setId(cursor.getInt(0));
             item.setCaseId(cursor.getString(cursor.getColumnIndex(CASE_ID_COLUMN)));
             item.setCaseName(cursor.getString(cursor.getColumnIndex(CASE_NAME_COLUMN)));
             item.setCaseStartTime(cursor.getLong(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
@@ -185,6 +186,7 @@ public class CrimeProvider {
         if(cursor.moveToFirst()){
             //String name = cursor.getString(2);
             //Log.e("zwb", "zwb ----- name = " + name);
+            item.setId(cursor.getInt(0));
             item.setCaseId(id);
             item.setCaseName(cursor.getString(2));
             item.setCaseStartTime(cursor.getLong(3));

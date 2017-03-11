@@ -375,9 +375,8 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
     private void saveToDataBase(Context context){
         CrimeProvider provider = new CrimeProvider(context);
         CrimeItem item = new CrimeItem();
+        item.setId(CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,0));
         item.setCaseName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
-        Log.e("zwb", "zwb -------- time sava = " + CommonConst.getPreferences(context,
-                CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
         item.setCaseStartTime(CommonConst.getPreferences(context,
                 CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
         item.setCaseEndTime(CommonConst.getPreferences(context,
@@ -395,7 +394,13 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         item.setLocation4FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,""));
         item.setLocation5Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
         item.setLocation5FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5_FILE,""));
-        provider.insert(item);
+
+        long keyID = CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,0);
+        if(keyID == 0){
+            provider.insert(item);
+        }else {
+            provider.update(item);
+        }
     }
 
     private void showSaveCaseInfoDialog(){
@@ -417,6 +422,9 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                         //startActivity(new Intent(AppActivity.this, CreateActivity.class));
                         saveToDataBase(getApplicationContext());
                         CommonConst.setCaseSaveOK(getApplicationContext(), true);
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.case_save_done),
+                                Toast.LENGTH_SHORT).show();
                         finish();
                         startActivity(new Intent(CreateCrimeActivityP3.this, AppActivity.class));
                     }

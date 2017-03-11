@@ -39,6 +39,13 @@ public class AppActivity extends AppCompatActivity {
             }
         });
 
+        mListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AppActivity.this, ListActivity.class));
+            }
+        });
+
     }
 
     private void showMsgAlertDialog(){

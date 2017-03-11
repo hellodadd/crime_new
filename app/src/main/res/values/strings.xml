@@ -39,4 +39,9 @@
     <string name="case_name">案件名称</string>
     <string name="crime_time_start_info">开始时间:</string>
     <string name="crime_time_end_info">结束时间:</string>
+    <string name="list_case_name">案件名称:</string>
+    <string name="list_case_time">案发时间:</string>
+    <string name="list_delete">删除</string>
+    <string name="case_save_done">案件保存成功！</string>
+    <string name="case_delete_done">案件删除成功！</string>
 </resources>

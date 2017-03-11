@@ -47,6 +47,8 @@ public class CreateActivity extends AppCompatActivity {
 
     private boolean mIsContinue;
 
+    private CrimeItem mCrimeItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,15 @@ public class CreateActivity extends AppCompatActivity {
             mIsContinue = getIntent().getBooleanExtra("continue", false);
         }else{
             mIsContinue = false;
+        }
+
+        if(getIntent() != null){
+            mCrimeItem = (CrimeItem) getIntent().getSerializableExtra("CrimeItem");
+        }
+
+        if(mCrimeItem != null){
+            initPreferences(mContext, mCrimeItem);
+            mIsContinue = true;
         }
 
         if(!mIsContinue) {
