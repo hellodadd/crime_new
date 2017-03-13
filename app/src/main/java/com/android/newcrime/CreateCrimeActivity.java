@@ -65,12 +65,12 @@ public class CreateCrimeActivity extends AppCompatActivity {
                 if (amapLocation.getErrorCode() == 0) {
                     //可在其中解析amapLocation获取相应内容。
                     if(mGpsLocationButton != null && !isGpsLocationDone(getApplicationContext())){
-                        mGpsLocationButton.setText(amapLocation.getLatitude() + "E" + "," +
-                                amapLocation.getLongitude() + "N");
+                        mGpsLocationButton.setText(amapLocation.getLatitude() + "N" + "," +
+                                amapLocation.getLongitude() + "E");
                         CommonConst.setPreferences(getApplicationContext(),
-                                CommonConst.KEY_CASE_GPS_LAT, amapLocation.getLatitude() + "E");
+                                CommonConst.KEY_CASE_GPS_LAT, amapLocation.getLatitude() + "N");
                         CommonConst.setPreferences(getApplicationContext(),
-                                CommonConst.KEY_CASE_GPS_LON, amapLocation.getLongitude() + "N");
+                                CommonConst.KEY_CASE_GPS_LON, amapLocation.getLongitude() + "E");
                     }
                 } else {
                     //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
@@ -209,6 +209,8 @@ public class CreateCrimeActivity extends AppCompatActivity {
             String lat = CommonConst.getPreferences(getApplicationContext(), CommonConst.KEY_CASE_GPS_LAT, "");
             String lon = CommonConst.getPreferences(getApplicationContext(), CommonConst.KEY_CASE_GPS_LON, "");
             mGpsLocationButton.setText(lat + "," + lon);
+        }else {
+            mGpsLocationButton.setText(getResources().getString(R.string.gps_location_ing));
         }
 
         mNextButton = (Button) findViewById(R.id.bottom_right_button);
