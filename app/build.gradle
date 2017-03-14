@@ -29,6 +29,22 @@ android {
             signingConfig signingConfigs.config
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
+                // 输出apk名称为projectName_versionName_versionCode_cpName.apk
+                def fileName = "newcrime_v${defaultConfig.versionName}_${defaultConfig.versionCode}_debug.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+            if (outputFile != null && outputFile.name.contains('release.apk')) {
+                // 输出apk名称为projectName_versionName_versionCode_cpName.apk
+                def fileName = "newcrime_v${defaultConfig.versionName}_${defaultConfig.versionCode}_release.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
 }
 
 dependencies {

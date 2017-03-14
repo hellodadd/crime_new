@@ -50,8 +50,8 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
     TextView mLocationNumCount4;
     TextView mLocationNumCount5;
 
-    Button mLocationCollection4;
-    Button mLocationCollection5;
+    LoadingButton mLocationCollection4;
+    LoadingButton mLocationCollection5;
 
     boolean mIsCollectionIng;
 
@@ -115,7 +115,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
 
         mLocationNumCount4 = (TextView)findViewById(R.id.location4_num_count);
 
-        mLocationCollection4 = (Button)findViewById(R.id.location_collection_4_button);
+        mLocationCollection4 = (LoadingButton)findViewById(R.id.location_collection_4_button);
         mLocationCollection4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +129,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_4,mLocationName4.getText());
                     startCollectionLocation4();
+                    ((LoadingButton)view).showLoading();
                 }
             }
         });
@@ -160,7 +161,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             mLocationName5.setText(locationName5);
         }
         mLocationNumCount5 = (TextView)findViewById(R.id.location5_num_count);
-        mLocationCollection5 = (Button)findViewById(R.id.location_collection_5_button);
+        mLocationCollection5 = (LoadingButton) findViewById(R.id.location_collection_5_button);
         mLocationCollection5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,6 +175,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_5,mLocationName5.getText());
                     startCollectionLocation5();
+                    ((LoadingButton)view).showLoading();
                 }
             }
         });
@@ -222,19 +224,23 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         if(CommonConst.isCollectionDone(getApplicationContext(),4)){
             mLocationCollection4.setBackground(getResources().getDrawable(R.drawable.button_succses));
             mLocationCollection4.setText(getString(R.string.collection_over));
+            mLocationCollection4.showButtonText();
         }
 
         if(CommonConst.isCollectionIng(getApplicationContext(), 4)){
             mLocationCollection4.setText(getString(R.string.collection_runing));
+            mLocationCollection4.showLoading();
         }
 
         if(CommonConst.isCollectionDone(getApplicationContext(),5)){
             mLocationCollection5.setBackground(getResources().getDrawable(R.drawable.button_succses));
             mLocationCollection5.setText(getString(R.string.collection_over));
+            mLocationCollection5.showButtonText();
         }
 
         if(CommonConst.isCollectionIng(getApplicationContext(), 5)){
             mLocationCollection5.setText(getString(R.string.collection_runing));
+            mLocationCollection5.showLoading();
         }
     }
 
@@ -326,6 +332,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                             CommonConst.KEY_CASE_LOCATION_4_COLLECTION_DONE,true);
                     mLocationCollection4.setBackground(getResources().getDrawable(R.drawable.button_succses));
                     mLocationCollection4.setText(getString(R.string.collection_over));
+                    mLocationCollection4.showButtonText();
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_4_FILE, path);
                 }else if(CommonConst.getPreferences(getApplicationContext(),CommonConst.KEY_CASE_LOCATION_5_COLLECTION_ING,false)){
@@ -335,6 +342,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
                             CommonConst.KEY_CASE_LOCATION_5_COLLECTION_DONE,true);
                     mLocationCollection5.setBackground(getResources().getDrawable(R.drawable.button_succses));
                     mLocationCollection5.setText(getString(R.string.collection_over));
+                    mLocationCollection5.showButtonText();
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_LOCATION_5_FILE, path);
                 }

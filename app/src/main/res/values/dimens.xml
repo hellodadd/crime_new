@@ -9,4 +9,5 @@
     <dimen name="paddingleft">20dp</dimen>
     <dimen name="edittext_hight">96dp</dimen>
     <dimen name="positon_name_hight">64dp</dimen>
+    <dimen name="text_default_size">14sp</dimen>
 </resources>

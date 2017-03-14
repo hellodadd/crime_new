@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">新建案件</string>
+    <string name="app_name">场所采集</string>
     <string name="create_crime">新建案件</string>
     <string name="back">返回</string>
     <string name="input_crime_name">请输入案件名称:</string>
@@ -45,4 +45,5 @@
     <string name="case_save_done">案件保存成功！</string>
     <string name="case_delete_done">案件删除成功！</string>
     <string name="gps_location_ing">GPS 定位中</string>
+    <string name="default_loading">Loading…</string>
 </resources>
