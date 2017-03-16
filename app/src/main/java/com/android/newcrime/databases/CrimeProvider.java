@@ -162,7 +162,7 @@ public class CrimeProvider {
             item.setId(cursor.getInt(0));
             item.setCaseId(cursor.getString(cursor.getColumnIndex(CASE_ID_COLUMN)));
             item.setCaseName(cursor.getString(cursor.getColumnIndex(CASE_NAME_COLUMN)));
-            item.setCreateTime(cursor.getLong(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
+            item.setCreateTime(cursor.getLong(cursor.getColumnIndex(CASE_CREATE_TIME_COLUMN)));
             item.setCaseStartTime(cursor.getLong(cursor.getColumnIndex(CASE_START_TIME_COLUMN)));
             item.setCaseEndTime(cursor.getLong(cursor.getColumnIndex(CASE_END_TIME_COLUMN)));
             item.setGpsLocationName(cursor.getString(cursor.getColumnIndex(CASE_GPS_NAME_COLUMN)));
@@ -323,6 +323,7 @@ public class CrimeProvider {
                 mBaseInfo.put("gpslocation", item.getGpsLocationName());
                 mBaseInfo.put("gpslat", item.getGpsLat());
                 mBaseInfo.put("gpslon", item.getGpsLon());
+                mBaseInfo.put("location1", item.getLocation1Name());
                 String path1 = item.getLocation1FilePath();
                 if(path1 != null && !path1.isEmpty()){
                     mBaseInfo.put("location1_file", getFileName(path1));

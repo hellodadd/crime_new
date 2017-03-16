@@ -393,7 +393,8 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
     private void saveToDataBase(Context context){
         CrimeProvider provider = new CrimeProvider(context);
         CrimeItem item = new CrimeItem();
-        item.setId(CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,0));
+        item.setId(CommonConst.getPreferences(context,CommonConst.KEY_ID,0));
+        item.setCaseId(CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,""));
         item.setCaseName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
         item.setCaseStartTime(CommonConst.getPreferences(context,
                 CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
@@ -413,7 +414,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
         item.setLocation5Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
         item.setLocation5FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5_FILE,""));
 
-        long keyID = CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,0);
+        long keyID = CommonConst.getPreferences(context,CommonConst.KEY_ID,0);
         if(keyID == 0){
             item.setCreateTime(Calendar.getInstance().getTimeInMillis());
             provider.insert(item);

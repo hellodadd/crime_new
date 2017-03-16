@@ -31,7 +31,7 @@ public class AppActivity extends AppCompatActivity {
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!CommonConst.isCaseSaveOk(getApplicationContext())) {
+                if(!CommonConst.isAppFirstRun(getApplicationContext()) && !CommonConst.isCaseSaveOk(getApplicationContext())) {
                     showMsgAlertDialog();
                 }else {
                     startActivity(new Intent(AppActivity.this, CreateActivity.class));

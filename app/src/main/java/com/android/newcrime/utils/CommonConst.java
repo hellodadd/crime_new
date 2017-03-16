@@ -21,6 +21,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CommonConst {
     public static final String PREFERENCES_NAME = "case_new_item";
+    public static final String KEY_ID = "key_id";
     public static final String KEY_CASE_ID = "case_id";
     public static final String KEY_CASE_NAME = "case_name";
     public static final String KEY_CASE_START_TIME = "case_start_time";
@@ -53,6 +54,8 @@ public class CommonConst {
     public static final String KEY_CASE_LOCATION_5_COLLECTION_DONE = "case_location_5_done";
 
     public static final String KEY_CASE_SAVE_OK = "case_save_ok";
+
+    public static final String KEY_APP_FIRST_RUN = "app_first_run";
 
     public static final String ACTION_RECEIVE_RESULT = "com.kuaikan.send_result";
 
@@ -99,7 +102,8 @@ public class CommonConst {
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         CrimeItem item = new CrimeItem();
-        editor.putLong(KEY_CASE_ID, item.getId());
+        editor.putLong(KEY_ID, item.getId());
+        editor.putString(KEY_CASE_ID, item.getCaseId());
         editor.putString(KEY_CASE_NAME, item.getCaseName());
         editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
         editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
@@ -135,7 +139,8 @@ public class CommonConst {
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         Log.e("zwb", "zwb ---- init keyid = " + item.getId());
-        editor.putLong(KEY_CASE_ID, item.getId());
+        editor.putLong(KEY_ID, item.getId());
+        editor.putString(KEY_CASE_ID, item.getCaseId());
         editor.putString(KEY_CASE_NAME, item.getCaseName());
         editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
         editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
@@ -198,6 +203,14 @@ public class CommonConst {
             return true;
         }
         return false;
+    }
+
+    public static boolean isAppFirstRun(Context context){
+        return getPreferences(context, KEY_APP_FIRST_RUN, true);
+    }
+
+    public static void setAppFirstRun(Context context, boolean ok){
+        setPreferences(context, KEY_APP_FIRST_RUN, ok);
     }
 
     public static boolean isCaseSaveOk(Context context){
