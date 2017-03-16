@@ -138,14 +138,14 @@ public class CreateCrimeActivity extends AppCompatActivity {
         });
 
         long timeStart = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_START_TIME,mCalendar.getTimeInMillis());
+                CommonConst.KEY_CASE_START_TIME,mCalendar.getTimeInMillis() - 60 * 60000);
         long timeEnd = CommonConst.getPreferences(getApplicationContext(),
-                CommonConst.KEY_CASE_END_TIME,mCalendar.getTimeInMillis());
+                CommonConst.KEY_CASE_END_TIME,mCalendar.getTimeInMillis() - 30 * 60000);
         mTimeStartDatePicker = (Button) findViewById(R.id.crime_time_start_picker_date);
         if(mIsContinue) {
             mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(timeStart));
         }else{
-            mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+            mTimeStartDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis() - 60 * 60000));
         }
         mTimeStartDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +158,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
         if(mIsContinue) {
             mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(timeStart));
         }else {
-            mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+            mTimeStartTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis() - 60 * 60000));
         }
         mTimeStartTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +171,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
         if(mIsContinue) {
             mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(timeEnd));
         }else {
-            mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis()));
+            mTimeEndDatePicker.setText(DateTimePicker.getCurrentDate(mCalendar.getTimeInMillis() - 30 * 60000));
         }
         mTimeEndDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +184,7 @@ public class CreateCrimeActivity extends AppCompatActivity {
         if(mIsContinue){
             mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(timeEnd));
         }else {
-            mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis()));
+            mTimeEndTimePicker.setText(DateTimePicker.getCurrentTime(mCalendar.getTimeInMillis() - 30 * 60000));
         }
         mTimeEndTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -120,6 +120,11 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(CommonConst.isCollectionDone(getApplicationContext(), 4)){
+                    Intent showRet = new Intent("android.intent.action.kuaikan.show_result");
+                    showRet.putExtra("xml", CommonConst.getPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_4_FILE, ""));
+                    showRet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(showRet);
                     return;
                 }
                 if(mLocationName4.getText() == null || mLocationName4.getText().isEmpty()){
@@ -166,6 +171,11 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(CommonConst.isCollectionDone(getApplicationContext(), 5)){
+                    Intent showRet = new Intent("android.intent.action.kuaikan.show_result");
+                    showRet.putExtra("xml", CommonConst.getPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_5_FILE, ""));
+                    showRet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(showRet);
                     return;
                 }
                 if(mLocationName5.getText() == null || mLocationName5.getText().isEmpty()){
@@ -405,6 +415,7 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
 
         long keyID = CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,0);
         if(keyID == 0){
+            item.setCreateTime(Calendar.getInstance().getTimeInMillis());
             provider.insert(item);
         }else {
             provider.update(item);

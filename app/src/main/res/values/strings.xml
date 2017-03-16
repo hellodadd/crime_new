@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">场所采集</string>
+    <string name="app_name">基站采集</string>
     <string name="create_crime">新建案件</string>
     <string name="back">返回</string>
     <string name="input_crime_name">请输入案件名称:</string>

@@ -1,8 +1,15 @@
 package com.android.newcrime;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+import android.util.Xml;
 
+import com.amap.api.maps.MapsInitializer;
 import com.android.newcrime.databases.CrimeItem;
 import com.android.newcrime.databases.CrimeProvider;
 import com.android.newcrime.utils.CommonConst;
@@ -10,8 +17,14 @@ import com.android.newcrime.utils.DirTraversal;
 import com.android.newcrime.utils.FileHelper;
 import com.android.newcrime.utils.ZipUtils;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by zwb on 2017/3/9.
@@ -22,6 +35,27 @@ public class DataInitial {
 
     public DataInitial(Context context){
         this.mContext = context;
+    }
+
+    //Command 1
+    public void createDeviceMsgXml() {
+        XmlHandler xmlhandler = new XmlHandler();
+        String deviceid = Build.SERIAL;//(SystemProperties.get("ro.serialno"));
+        String initstatus = "1";
+        String swversion = "";
+        String mapversion= MapsInitializer.getVersion();
+
+       // SharedPreferences prefs = mContext.getSharedPreferences("InitialDevice", 0);
+       // initstatus = prefs.getString("Initial", "0");
+
+        try {
+            PackageManager manager = mContext.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(mContext.getPackageName(), 0);
+            swversion = info.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        xmlhandler.createDeviceMsg(deviceid, initstatus, swversion, mapversion);
     }
 
     //Command 11
@@ -85,6 +119,60 @@ public class DataInitial {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return true;
+    }
+
+    //Command 14
+    public boolean deleteSceneInfo(){
+        XmlHandler xmlhandler = new XmlHandler();
+        List<String> object = xmlhandler.deleteSceneInfoCmd();
+        List result = new ArrayList<String>();
+
+        Log.e("zwb", "zwb ------ deleteSceneInfo = " + object);
+
+        if(object == null || object.size()==0) return false;
+
+        CrimeProvider mCrime = new CrimeProvider(mContext);
+        for(int i=0;i<object.size();i++){
+            String id = object.get(i);
+            Log.e("zwb", "zwb ------ deleteSceneInfo id = " + id);
+            CrimeItem mCrimeItem = mCrime.getItem(id);
+            if(mCrimeItem != null) {
+                mCrime.delete(mCrimeItem.getId());
+                result.add(id);
+            }else{
+                Log.d("Anita","Cannot get the scene id from databases");
+            }
+        }
+
+        if(result.size()!=0){
+            xmlhandler.createSuccessDeleteMsgFile(result);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //Command 13
+    public boolean WriteSceneNo(){
+        XmlHandler xmlhandler = new XmlHandler();
+        String[] object = xmlhandler.writeSceneIdCmd();
+
+        if(object == null || object.length==0) return false;
+
+        String id = object[0];
+        String SceneNo = object[1];
+        CrimeProvider mCrime = new CrimeProvider(mContext);
+        CrimeItem mCrimeItem = mCrime.getItem(id);
+
+        if(mCrimeItem == null || SceneNo.length() ==0) return false;
+        //if(mCrimeItem.getComplete().equalsIgnoreCase("0")) return false;
+
+        //mCrimeItem.setComplete("2");
+       // mCrimeItem.setCreateTime(Calendar.getInstance().getTimeInMillis());
+        mCrimeItem.setCaseStatus(SceneNo);
+        mCrime.update(mCrimeItem);
 
         return true;
     }

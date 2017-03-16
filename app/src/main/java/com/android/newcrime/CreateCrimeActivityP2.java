@@ -118,6 +118,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isCollectionDone(getApplicationContext() , 1)){
+                    Intent showRet = new Intent("android.intent.action.kuaikan.show_result");
+                    showRet.putExtra("xml", CommonConst.getPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_1_FILE, ""));
+                    showRet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(showRet);
                     return;
                 }
                 if(mLocationName1.getText() == null || mLocationName1.getText().isEmpty()){
@@ -163,6 +168,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isCollectionDone(getApplicationContext() , 2)){
+                    Intent showRet = new Intent("android.intent.action.kuaikan.show_result");
+                    showRet.putExtra("xml", CommonConst.getPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_2_FILE, ""));
+                    showRet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(showRet);
                     return;
                 }
                 if(mLocationName2.getText() == null || mLocationName2.getText().isEmpty()){
@@ -209,6 +219,11 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isCollectionDone(getApplicationContext() , 3)){
+                    Intent showRet = new Intent("android.intent.action.kuaikan.show_result");
+                    showRet.putExtra("xml", CommonConst.getPreferences(getApplicationContext(),
+                            CommonConst.KEY_CASE_LOCATION_3_FILE, ""));
+                    showRet.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(showRet);
                     return;
                 }
                 if(mLocationName3.getText() == null || mLocationName3.getText().isEmpty()){

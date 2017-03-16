@@ -28,8 +28,9 @@ public class ThreadReadWriterIOSocket implements Runnable{
     String mMapCachePath = Environment.getExternalStorageDirectory()+"/Amap.zip";
     String mInitDevicePath = Environment.getExternalStorageDirectory()+"/InitDeviceCmd.xml";
     String mSceneListPath = Environment.getExternalStorageDirectory()+"/getSceneListCmd.xml";
-    String mWriteSceneIdPath = Environment.getExternalStorageDirectory()+"/writeSceneIdCmd.xml";
-    String mDeleteSceneInfoPath = Environment.getExternalStorageDirectory()+"/deleteSceneInfoCmd.xml";
+    String mWriteSceneIdPath = Environment.getExternalStorageDirectory()+"/writeCaseIdCmd.xml";//Environment.getExternalStorageDirectory()+"/writeSceneIdCmd.xml";
+    String mDeleteSceneInfoPath = Environment.getExternalStorageDirectory()+"/deleteCaseInfoCmd.xml";
+    //Environment.getExternalStorageDirectory()+"/deleteSceneInfoCmd.xml";
     private Socket client;
     private Context context;
 
@@ -76,7 +77,7 @@ public class ThreadReadWriterIOSocket implements Runnable{
                             case 0: //斷開Socket
                                 SocketService.ioThreadFlag=false;
                             case 1: //获取设备信息命令
-                                /*dataInitial.createDeviceMsgXml();
+                                dataInitial.createDeviceMsgXml();
                                 File file = FileHelper.newFile("DeviceMsg.xml");
                                 if (file.exists() == true) {
                                     byte[] abyte = FileHelper.readFile(file);
@@ -88,7 +89,6 @@ public class ThreadReadWriterIOSocket implements Runnable{
                                     concatCmdline(out, currcmdinfo, errbyte.length);
                                     sendErrorString(out, errbyte);
                                 }
-                                */
                                 SocketService.ioThreadFlag=false;
                                 break;
                             case 2: //设备初始化命令
@@ -125,42 +125,10 @@ public class ThreadReadWriterIOSocket implements Runnable{
 
                                 break;
                             case 11: //获取现场列表命令
-                                //組成BaseMsg.xml
-                                result = dataInitial.CreateBaseMsg();
 
-                                //获取BaseMsg.xml
-                                File fileBaseMsgs = FileHelper.newFile(CommonConst.CASE_INFO_XML);
-                                if (result && fileBaseMsgs.exists() == true) {
-                                    byte[] abyte = FileHelper.readFile(fileBaseMsgs);
-                                    concatCmdline(out, currcmdinfo, abyte.length);
-                                    sendDeviceinfo(out, currcmdinfo, fileBaseMsgs);
-                                } else {
-                                    String errstr= "getCase Fail";
-                                    byte [] errbyte = errstr.getBytes("UTF-8");
-                                    concatCmdline(out, currcmdinfo, errbyte.length);
-                                    sendErrorString(out, errbyte);
-                                }
-                                SocketService.ioThreadFlag=false;
                                 break;
                             case 12: //获取现场信息命令
 
-                                receiveString = receiveDataFromSocket(in, currcmdinfo);
-
-                                //組成單一BaseMsg.xml
-                                if (dataInitial.CreateBaseMsgIdZip(receiveString)) {
-                                    File fileBaseMsg = FileHelper.newFile(CommonConst.CASE_INFO_ZIP);
-                                    byte[] abyte = FileHelper.readFile(fileBaseMsg);
-                                    concatCmdline(out, currcmdinfo, abyte.length);
-                                    sendDeviceinfoZip(out, currcmdinfo, fileBaseMsg);
-                                } else {
-                                    Log.d("Anita","File Not Found");
-                                    //String errstr= "File Not Found";
-                                    //byte [] errbyte = errstr.getBytes("UTF-8");
-                                    concatCmdline(out, currcmdinfo, 0);
-                                    //sendErrorString(out, errbyte);
-                                }
-                                //Wait command 13
-                                //SocketService.ioThreadFlag=false;
                                 break;
                             case 13: //回写现勘编号命令
                                 /*
@@ -204,17 +172,78 @@ public class ThreadReadWriterIOSocket implements Runnable{
                                 SocketService.ioThreadFlag=false;
                                 break;
                             case 21: //获取现场基站列表命令
+                                //組成BaseMsg.xml
+                                result = dataInitial.CreateBaseMsg();
+
+                                //获取BaseMsg.xml
+                                File fileBaseMsgs = FileHelper.newFile(CommonConst.CASE_INFO_XML);
+                                if (result && fileBaseMsgs.exists() == true) {
+                                    byte[] abyte = FileHelper.readFile(fileBaseMsgs);
+                                    concatCmdline(out, currcmdinfo, abyte.length);
+                                    sendDeviceinfo(out, currcmdinfo, fileBaseMsgs);
+                                } else {
+                                    String errstr= "getCase Fail";
+                                    byte [] errbyte = errstr.getBytes("UTF-8");
+                                    concatCmdline(out, currcmdinfo, errbyte.length);
+                                    sendErrorString(out, errbyte);
+                                }
+                                SocketService.ioThreadFlag=false;
                                 break;
                             case 22: //获取现场基站信息命令
+                                receiveString = receiveDataFromSocket(in, currcmdinfo);
+
+                                //組成單一BaseMsg.xml
+                                if (dataInitial.CreateBaseMsgIdZip(receiveString)) {
+                                    File fileBaseMsg = FileHelper.newFile(CommonConst.CASE_INFO_ZIP);
+                                    byte[] abyte = FileHelper.readFile(fileBaseMsg);
+                                    concatCmdline(out, currcmdinfo, abyte.length);
+                                    sendDeviceinfoZip(out, currcmdinfo, fileBaseMsg);
+                                } else {
+                                    Log.d("Anita","File Not Found");
+                                    //String errstr= "File Not Found";
+                                    //byte [] errbyte = errstr.getBytes("UTF-8");
+                                    concatCmdline(out, currcmdinfo, 0);
+                                    //sendErrorString(out, errbyte);
+                                }
+                                //Wait command 13
+                                //SocketService.ioThreadFlag=false;
                                 break;
                             case 23: //回写现场基站状态命令
-                                /*
-                                receiveDataFromSocket(in, currcmdinfo);
-                                concatCmdline(out, currcmdinfo,1);
-                                sendResult(out,false);
-                                */
+                                File writefile = new File(mWriteSceneIdPath);
+                                if(writefile.exists()) deleteFiles(writefile);
+                                filebytes = receiveDataFromSocketByte(in, currcmdinfo);
+
+                                if(dataInitial.WriteSceneNo()){
+                                    concatCmdline(out, currcmdinfo, 1);
+                                    sendResult(out,true);
+                                }else{
+                                    Log.d("Anita","Prase Fail");
+                                    //String errstr= "Prase Fail";
+                                    //byte [] errbyte = errstr.getBytes("UTF-8");
+                                    concatCmdline(out, currcmdinfo, 0);
+                                    //sendErrorString(out, errbyte);
+                                }
+                                //Wait command 0
+                                //SocketService.ioThreadFlag=false;
                                 break;
                             case 24: //删除现场基站信息命令
+                                File deletefile = new File(mDeleteSceneInfoPath);
+                                if(deletefile.exists()) deleteFiles(deletefile);
+                                filebytes = receiveDataFromSocketByte(in, currcmdinfo);
+                                result = dataInitial.deleteSceneInfo();
+                                //获取BaseMsg.xml
+                                File fileSuccessToDelete = FileHelper.newFile("SuccessToDelete.xml");
+                                if(result && fileSuccessToDelete.exists() == true){
+                                    byte[] abyte = FileHelper.readFile(fileSuccessToDelete);
+                                    concatCmdline(out, currcmdinfo, abyte.length);
+                                    sendDeviceinfo(out, currcmdinfo, fileSuccessToDelete);
+                                }else{
+                                    //String errstr= "Prase Fail";
+                                    //byte [] errbyte = errstr.getBytes("UTF-8");
+                                    concatCmdline(out, currcmdinfo, 0);
+                                    //sendErrorString(out, errbyte);
+                                }
+                                SocketService.ioThreadFlag=false;
                                 break;
                             default:
                                 Log.e(TAG, "incorrect cmd =" + currcmdinfo[1]);
@@ -342,10 +371,11 @@ public class ThreadReadWriterIOSocket implements Runnable{
             case 11:
                 path = mSceneListPath;
                 break;
-            case 13:
+            case 23:
                 path = mWriteSceneIdPath;
                 break;
-            case 14:
+            //case 14:
+            case 24:
                 path = mDeleteSceneInfoPath;
                 break;
             default:

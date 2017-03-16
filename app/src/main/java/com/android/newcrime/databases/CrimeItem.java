@@ -12,6 +12,7 @@ public class CrimeItem implements Serializable{
     private long id;
     private String mCaseId;
     private String mCaseName;
+    private long mCreateTime;
     private long mCaseStartTime;
     private long mCaseEndTime;
     private String mGpsLocationName;
@@ -27,6 +28,7 @@ public class CrimeItem implements Serializable{
     private String mLocation4FilePath;
     private String mLocation5Name;
     private String mLocation5FilePath;
+    private String mCaseStatus;
 
     public CrimeItem(){
         Calendar c = Calendar.getInstance();
@@ -35,8 +37,9 @@ public class CrimeItem implements Serializable{
         this.id = 0;
         this.mCaseId = "";
         this.mCaseName = "";
-        this.mCaseStartTime = time;
-        this.mCaseEndTime = time;
+        this.mCreateTime = time;
+        this.mCaseStartTime = time - 60 * 60000;
+        this.mCaseEndTime = time - 30 * 60000;
         this.mGpsLocationName = "";
         this.mGpsLat = "";
         this.mGpsLon = "";
@@ -50,6 +53,7 @@ public class CrimeItem implements Serializable{
         this.mLocation4FilePath = "";
         this.mLocation5Name = "";
         this.mLocation5FilePath = "";
+        this.mCaseStatus = "0";
     }
 
     public long getId(){
@@ -74,6 +78,14 @@ public class CrimeItem implements Serializable{
 
     public void setCaseName(String caseName){
         this.mCaseName = caseName;
+    }
+
+    public long getCreateTime(){
+        return this.mCreateTime;
+    }
+
+    public void setCreateTime(long time){
+        this.mCreateTime = time;
     }
 
     public long getCaseStartTime(){
@@ -194,5 +206,13 @@ public class CrimeItem implements Serializable{
 
     public void setLocation5FilePath(String path){
         this.mLocation5FilePath = path;
+    }
+
+    public String  getCaseStatus(){
+        return this.mCaseStatus;
+    }
+
+    public void setCaseStatus(String status){
+        this.mCaseStatus = status;
     }
 }
