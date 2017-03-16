@@ -1,17 +1,26 @@
 package com.android.newcrime.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.newcrime.AppActivity;
+import com.android.newcrime.CreateCrimeActivityP3;
+import com.android.newcrime.R;
 import com.android.newcrime.databases.CrimeItem;
+import com.android.newcrime.databases.CrimeProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -316,6 +325,115 @@ public class CommonConst {
         }
 
         return true;
+    }
+
+
+    public static void saveToDataBase(Context context){
+        CrimeProvider provider = new CrimeProvider(context);
+        CrimeItem item = new CrimeItem();
+        item.setId(CommonConst.getPreferences(context,CommonConst.KEY_ID,0));
+        item.setCaseId(CommonConst.getPreferences(context,CommonConst.KEY_CASE_ID,""));
+        item.setCaseName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, ""));
+        item.setCaseStartTime(CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_START_TIME, Calendar.getInstance().getTimeInMillis()));
+        item.setCaseEndTime(CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis()));
+        item.setGpsLocationName(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,""));
+        item.setGpsLat(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,""));
+        item.setGpsLon(CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,""));
+        item.setLocation1Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,""));
+        item.setLocation1FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1_FILE,""));
+        item.setLocation2Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,""));
+        item.setLocation2FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2_FILE,""));
+        item.setLocation3Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,""));
+        item.setLocation3FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3_FILE,""));
+        item.setLocation4Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,""));
+        item.setLocation4FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,""));
+        item.setLocation5Name(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,""));
+        item.setLocation5FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5_FILE,""));
+
+        long keyID = CommonConst.getPreferences(context,CommonConst.KEY_ID,0);
+        if(keyID == 0){
+            item.setCreateTime(Calendar.getInstance().getTimeInMillis());
+            provider.insert(item);
+        }else {
+            provider.update(item);
+        }
+    }
+
+    public static String getCaseInfo(Context context){
+        String info = "";
+        String caseName = CommonConst.getPreferences(context,CommonConst.KEY_CASE_NAME, "");
+        String caseStartTime = DateTimePicker.getCurrentDashTime(
+                CommonConst.getPreferences(context,
+                        CommonConst.KEY_CASE_START_TIME,Calendar.getInstance().getTimeInMillis()));
+        String caseEndTime = DateTimePicker.getCurrentDashTime(
+                CommonConst.getPreferences(context,
+                        CommonConst.KEY_CASE_END_TIME,Calendar.getInstance().getTimeInMillis()));
+        String caseGps = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_NAME,"");
+        String gpsLat = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LAT,"");
+        String gpsLon = CommonConst.getPreferences(context,CommonConst.KEY_CASE_GPS_LON,"");
+        String location1 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1,"");
+        String location2 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2,"");
+        String location3 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3,"");
+        String location4 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4,"");
+        String location5 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5,"");
+
+        String locationFile1 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_1_FILE,"");
+        String locationFile2 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_2_FILE,"");
+        String locationFile3 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_3_FILE,"");
+        String locationFile4 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,"");
+        String locationFile5 = CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_4_FILE,"");
+
+        String gpsLocation = "";
+        if(gpsLat.isEmpty()){
+            gpsLocation = context.getResources().getString(R.string.gps_location_fail);
+        }else {
+            gpsLocation = gpsLat + ", " + gpsLon;
+        }
+        String locationCollection1 = "";
+        if(locationFile1.isEmpty()){
+            locationCollection1 = context.getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection1 = context.getResources().getString(R.string.collection_over);
+        }
+        String locationCollection2 = "";
+        if(locationFile2.isEmpty()){
+            locationCollection2 = context.getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection2 = context.getResources().getString(R.string.collection_over);
+        }
+        String locationCollection3 = "";
+        if(locationFile3.isEmpty()){
+            locationCollection3 = context.getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection3 = context.getResources().getString(R.string.collection_over);
+        }
+        String locationCollection4 = "";
+        if(locationFile4.isEmpty()){
+            locationCollection4 = context.getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection4 = context.getResources().getString(R.string.collection_over);
+        }
+        String locationCollection5 = "";
+        if(locationFile5.isEmpty()){
+            locationCollection5 = context.getResources().getString(R.string.collection_fail);
+        }else{
+            locationCollection5 = context.getResources().getString(R.string.collection_over);
+        }
+
+        info = context.getResources().getString(R.string.case_name) + ": " + caseName + "\n"
+                + context.getResources().getString(R.string.crime_time_start_info) + " " + caseStartTime + "\n"
+                + context.getResources().getString(R.string.crime_time_end_info) + " " + caseEndTime + "\n"
+                + context.getResources().getString(R.string.gps_string) + " " + caseGps + "\n"
+                + context.getResources().getString(R.string.gps_location) + " " + gpsLocation + "\n"
+                + context.getResources().getString(R.string.location1) + " " + location1 + "  " + locationCollection1 + "\n"
+                + context.getResources().getString(R.string.location2) + " " + location2 + "  " + locationCollection2 + "\n"
+                + context.getResources().getString(R.string.location3) + " " + location3 + "  " + locationCollection3 + "\n"
+                + context.getResources().getString(R.string.location4) + " " + location4 + "  " + locationCollection4 + "\n"
+                + context.getResources().getString(R.string.location5) + " " + location5 + "  " + locationCollection5 + "\n";
+
+        return info;
     }
 
     public static String copyToInternalPath(Context context, String OldPath){

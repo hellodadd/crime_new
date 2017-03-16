@@ -1,9 +1,11 @@
 package com.android.newcrime;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -80,8 +82,7 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savedata();
-                Toast.makeText(getApplicationContext(),
-                        getResources().getString(R.string.msg_alert_save),Toast.LENGTH_LONG).show();
+                showSaveCaseInfoDialog(getApplicationContext());
             }
         });
 
@@ -470,4 +471,33 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             }
         }
     };
+
+    public void showSaveCaseInfoDialog(final Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(context.getResources().getString(R.string.msg_case_info_confirm));
+        builder.setMessage(CommonConst.getCaseInfo(context));
+        builder.setNegativeButton(context.getResources().getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //onBackPressed();
+                        CommonConst.setCaseSaveOK(context, false);
+                    }
+                });
+        builder.setPositiveButton(context.getResources().getString(R.string.save),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //startActivity(new Intent(AppActivity.this, CreateActivity.class));
+                        CommonConst.saveToDataBase(context);
+                        CommonConst.setCaseSaveOK(context, true);
+                        Toast.makeText(context,
+                                context.getResources().getString(R.string.case_save_done),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(CreateCrimeActivityP2.this, AppActivity.class));
+                    }
+                });
+        builder.show();
+    }
 }

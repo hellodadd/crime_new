@@ -119,7 +119,7 @@ public class CreateActivity extends AppCompatActivity {
         mCreateCrimeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommonConst.setAppFirstRun(getApplicationContext(), true);
+                CommonConst.setAppFirstRun(getApplicationContext(), false);
                 createNewCase();
                 //mCrimeProvider.createBaseMsgXml("d8818f0feaec4c049eff8c6e0ba796ba");
                 //DataInitial dataInitial = new DataInitial(getApplicationContext());
