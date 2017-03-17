@@ -33,6 +33,7 @@ public class CommonConst {
     public static final String KEY_ID = "key_id";
     public static final String KEY_CASE_ID = "case_id";
     public static final String KEY_CASE_NAME = "case_name";
+    public static final String KEY_CASE_CREATE_TIME = "case_create_time";
     public static final String KEY_CASE_START_TIME = "case_start_time";
     public static final String KEY_CASE_END_TIME = "case_end_time";
     public static final String KEY_CASE_GPS_NAME = "case_gps_name";
@@ -114,6 +115,7 @@ public class CommonConst {
         editor.putLong(KEY_ID, item.getId());
         editor.putString(KEY_CASE_ID, item.getCaseId());
         editor.putString(KEY_CASE_NAME, item.getCaseName());
+        editor.putLong(KEY_CASE_CREATE_TIME, item.getCreateTime());
         editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
         editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
         editor.putString(KEY_CASE_GPS_NAME, item.getGpsLocationName());
@@ -151,6 +153,7 @@ public class CommonConst {
         editor.putLong(KEY_ID, item.getId());
         editor.putString(KEY_CASE_ID, item.getCaseId());
         editor.putString(KEY_CASE_NAME, item.getCaseName());
+        editor.putLong(KEY_CASE_CREATE_TIME, item.getCreateTime());
         editor.putLong(KEY_CASE_START_TIME, item.getCaseStartTime());
         editor.putLong(KEY_CASE_END_TIME, item.getCaseEndTime());
         editor.putString(KEY_CASE_GPS_NAME, item.getGpsLocationName());
@@ -353,10 +356,13 @@ public class CommonConst {
         item.setLocation5FilePath(CommonConst.getPreferences(context,CommonConst.KEY_CASE_LOCATION_5_FILE,""));
 
         long keyID = CommonConst.getPreferences(context,CommonConst.KEY_ID,0);
+        //Log.e("zwb","zwb -------- keyID = " + keyID);
         if(keyID == 0){
+            //Log.e("zwb","zwb -------- keyID tiem = " + Calendar.getInstance().getTimeInMillis());
             item.setCreateTime(Calendar.getInstance().getTimeInMillis());
             provider.insert(item);
         }else {
+            item.setCreateTime(getPreferences(context,KEY_CASE_CREATE_TIME,Calendar.getInstance().getTimeInMillis()));
             provider.update(item);
         }
     }

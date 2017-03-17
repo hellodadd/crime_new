@@ -19,6 +19,8 @@ import com.android.newcrime.databases.CrimeItem;
 import com.android.newcrime.databases.CrimeProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -46,6 +48,14 @@ public class ListActivity extends AppCompatActivity {
         mCrimeProvider = new CrimeProvider(context);
         mItemslist = new ArrayList<CrimeItem>();
         mItemslist = mCrimeProvider.getAll();
+
+        Collections.sort(mItemslist,
+                new Comparator<CrimeItem>() {
+                    public int compare(CrimeItem o1, CrimeItem o2) {
+                        return String.valueOf(o1.getCreateTime()).compareTo(String.valueOf(o2.getCreateTime()));
+                    }
+                });
+        Collections.reverse(mItemslist);
 
         mListV=(ListView)findViewById(R.id.listView);
         mAdapter = new ListAdapter(ListActivity.this,mItemslist);
