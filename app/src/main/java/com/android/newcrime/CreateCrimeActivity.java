@@ -133,7 +133,12 @@ public class CreateCrimeActivity extends AppCompatActivity {
                     CommonConst.setPreferences(getApplicationContext(),
                             CommonConst.KEY_CASE_GPS_NAME,mGpsInputEdit.getText());
                     //insert to db;
-                    showSaveCaseInfoDialog(getApplicationContext());
+                    if(CommonConst.isHavaCollection(getApplicationContext())) {
+                        showSaveCaseInfoDialog(getApplicationContext());
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.can_not_save_alert),Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

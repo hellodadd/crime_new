@@ -82,7 +82,13 @@ public class CreateCrimeActivityP2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savedata();
-                showSaveCaseInfoDialog(getApplicationContext());
+                //insert to db;
+                if(CommonConst.isHavaCollection(getApplicationContext())) {
+                    showSaveCaseInfoDialog(getApplicationContext());
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.can_not_save_alert),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -233,6 +233,23 @@ public class CommonConst {
         setPreferences(context, KEY_CASE_SAVE_OK, ok);
     }
 
+    public static boolean isHavaCollection(Context context){
+        if(CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_LOCATION_1_COLLECTION_DONE, false)
+                || CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_LOCATION_2_COLLECTION_DONE, false)
+                || CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_LOCATION_3_COLLECTION_DONE, false)
+                || CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_LOCATION_4_COLLECTION_DONE, false)
+                || CommonConst.getPreferences(context,
+                CommonConst.KEY_CASE_LOCATION_5_COLLECTION_DONE, false)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
    public static boolean isCollectionDone(Context context, int location){
        if(location == 1){
            return CommonConst.getPreferences(context,

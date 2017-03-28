@@ -82,7 +82,13 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 savedata();
-                showSaveCaseInfoDialog(getApplicationContext());
+                //insert to db;
+                if(CommonConst.isHavaCollection(getApplicationContext())) {
+                    showSaveCaseInfoDialog(getApplicationContext());
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.can_not_save_alert),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -196,7 +202,13 @@ public class CreateCrimeActivityP3 extends AppCompatActivity {
             public void onClick(View view) {
                 //saveCaseInfoXml(getApplicationContext());
                 savedata();
-                showSaveCaseInfoDialog(getApplicationContext());
+                //insert to db;
+                if(CommonConst.isHavaCollection(getApplicationContext())) {
+                    showSaveCaseInfoDialog(getApplicationContext());
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.can_not_save_alert),Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
