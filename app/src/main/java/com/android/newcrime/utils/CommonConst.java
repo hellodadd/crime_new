@@ -146,6 +146,18 @@ public class CommonConst {
         editor.commit();
     }
 
+    public static void resetCaseCollectionStata(Context context){
+        SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(KEY_CASE_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_1_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_2_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_3_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_4_COLLECTION_ING, false);
+        editor.putBoolean(KEY_CASE_LOCATION_5_COLLECTION_ING, false);
+        editor.commit();
+    }
+
     public static void initPreferences(Context context, CrimeItem item){
         SharedPreferences sp = context.getSharedPreferences(CommonConst.PREFERENCES_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

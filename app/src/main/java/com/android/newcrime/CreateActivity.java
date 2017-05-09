@@ -31,6 +31,7 @@ import java.util.Calendar;
 import javax.xml.datatype.Duration;
 
 import static com.android.newcrime.utils.CommonConst.initPreferences;
+import static com.android.newcrime.utils.CommonConst.resetCaseCollectionStata;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -75,6 +76,8 @@ public class CreateActivity extends AppCompatActivity {
 
         if(!mIsContinue) {
             initPreferences(mContext);
+        }else{
+            resetCaseCollectionStata(mContext);
         }
 
         CommonConst.setCaseSaveOK(mContext, false);
