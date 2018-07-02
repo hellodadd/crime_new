@@ -63,24 +63,24 @@ public class XmlHandler {
             //内容结点
             for(Device d: devices) {
 
-                xmlSerializer.startTag(null, d.getDeviceId()[0]);
-                xmlSerializer.text(d.getDeviceId()[1]);
-                xmlSerializer.endTag(null, d.getDeviceId()[0]);
+                xmlSerializer.startTag(null, d.getDeviceId()[0].trim());
+                xmlSerializer.text(d.getDeviceId()[1].trim());
+                xmlSerializer.endTag(null, d.getDeviceId()[0].trim());
                 changeLine(xmlSerializer, enter);
 
-                xmlSerializer.startTag(null, d.getInitStatus()[0]);
-                xmlSerializer.text(d.getInitStatus()[1]);
-                xmlSerializer.endTag(null, d.getInitStatus()[0]);
+                xmlSerializer.startTag(null, d.getInitStatus()[0].trim());
+                xmlSerializer.text(d.getInitStatus()[1].trim());
+                xmlSerializer.endTag(null, d.getInitStatus()[0].trim());
                 changeLine(xmlSerializer, enter);
 
-                xmlSerializer.startTag(null, d.getSwVersion()[0]);
+                xmlSerializer.startTag(null, d.getSwVersion()[0].trim());
                 xmlSerializer.text(d.getSwVersion()[1]);
-                xmlSerializer.endTag(null, d.getSwVersion()[0]);
+                xmlSerializer.endTag(null, d.getSwVersion()[0].trim());
                 changeLine(xmlSerializer, enter);
 
-                xmlSerializer.startTag(null, d.getMapVersion()[0]);
-                xmlSerializer.text(d.getMapVersion()[1]);
-                xmlSerializer.endTag(null, d.getMapVersion()[0]);
+                xmlSerializer.startTag(null, d.getMapVersion()[0].trim());
+                xmlSerializer.text(d.getMapVersion()[1].trim());
+                xmlSerializer.endTag(null, d.getMapVersion()[0].trim());
                 changeLine(xmlSerializer, enter);
 
             }
@@ -151,18 +151,18 @@ public class XmlHandler {
             return;
         }
         try {
-            xmlSerializer.startTag(null, tagstring+"s");
+            xmlSerializer.startTag(null, tagstring.trim()+"s");
             for (int i = 0; i < info.size(); i++) {
                 HashMap<String, String> map = info.get(i);
-                xmlSerializer.startTag(null, tagstring);
+                xmlSerializer.startTag(null, tagstring.trim());
                 for (HashMap.Entry<String, String> entry : map.entrySet()) {
-                    xmlSerializer.startTag(null, entry.getKey());
-                    xmlSerializer.text(entry.getValue());
-                    xmlSerializer.endTag(null, entry.getKey());
+                    xmlSerializer.startTag(null, entry.getKey().trim());
+                    xmlSerializer.text(entry.getValue().trim());
+                    xmlSerializer.endTag(null, entry.getKey().trim());
                 }
-                xmlSerializer.endTag(null, tagstring);
+                xmlSerializer.endTag(null, tagstring.trim());
             }
-            xmlSerializer.endTag(null, tagstring+"s");
+            xmlSerializer.endTag(null, tagstring.trim()+"s");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,7 +185,7 @@ public class XmlHandler {
                         String name = parser.getName();
                         if (name.equalsIgnoreCase("localeid")) {
                             eventType = parser.next();
-                            sceneId.add(parser.getText());
+                            sceneId.add(parser.getText().trim());
                         }
                         break;
                     case XmlPullParser.END_TAG:
@@ -224,7 +224,7 @@ public class XmlHandler {
             //内容结点
             for (String d : result) {
                 xmlSerializer.startTag(null, "localeid");
-                xmlSerializer.text(d);
+                xmlSerializer.text(d.trim());
                 xmlSerializer.endTag(null, "localeid");
                 changeLine(xmlSerializer, enter);
             }
